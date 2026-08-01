@@ -22,7 +22,7 @@ CREATE INDEX IF NOT EXISTS idx_notifications_is_read ON public.notifications(use
 -- ============================================================
 -- 2. TOUR REVIEWS TABLE
 -- ============================================================
-CREATE TABLE IF NOT EXISTS public.TourReview (
+CREATE TABLE IF NOT EXISTS public."TourReview" (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   trip_id TEXT NOT NULL REFERENCES public."Trip"(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,

@@ -24,8 +24,10 @@ const fromCookies = () =>
         .split(';')
         .filter(Boolean)
         .map((c) => {
-          const [cookieName, ...cookieParts] = c.trim().split('=');
-          return { name: cookieName.trim(), value: decodeURIComponent(cookieParts.join('=')) };
+          const eqIndex = c.trim().indexOf('=');
+          const cookieName = eqIndex >= 0 ? c.trim().slice(0, eqIndex) : c.trim();
+          const cookieValue = eqIndex >= 0 ? c.trim().slice(eqIndex + 1) : '';
+          return { name: cookieName.trim(), value: decodeURIComponent(cookieValue) };
         })
         .filter((c) => c.name);
 

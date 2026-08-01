@@ -232,24 +232,24 @@ export default function ToursClientPage() {
 }
 
 function TourCard({ tour }: {tour: typeof allTours[0];}) {
-  const [liveRating, setLiveRating] = useState<{ avg: number; count: number } | null>(null);
+  const [liveRating, setLiveRating] = useState<{avg: number;count: number;} | null>(null);
   const supabase = createClient();
 
   useEffect(() => {
     // Try to fetch live DB rating if tour has a slug-based id
     const fetchRating = async () => {
       // Match by title slug pattern — look up Trip by title
-      const { data } = await supabase
-        .from('Trip')
-        .select('id')
-        .ilike('title', tour.title)
-        .maybeSingle();
+      const { data } = await supabase.
+      from('Trip').
+      select('id').
+      ilike('title', tour.title).
+      maybeSingle();
       if (!data?.id) return;
-      const { data: reviews } = await supabase
-        .from('TourReview')
-        .select('rating')
-        .eq('trip_id', data.id)
-        .eq('is_approved', true);
+      const { data: reviews } = await supabase.
+      from('TourReview').
+      select('rating').
+      eq('trip_id', data.id).
+      eq('is_approved', true);
       if (reviews && reviews.length > 0) {
         const avg = reviews.reduce((s: number, r: any) => s + r.rating, 0) / reviews.length;
         setLiveRating({ avg: Math.round(avg * 10) / 10, count: reviews.length });
