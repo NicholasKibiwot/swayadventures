@@ -957,6 +957,12 @@ function BookingSuccess({
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
+            href={`/booking/invoice/${bookingRef}`}
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-accent text-white font-semibold rounded-xl hover:bg-amber-600 transition-colors">
+            <Icon name="DocumentTextIcon" size={16} />
+            View Invoice
+          </Link>
+          <Link
             href="/"
             className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-primary text-white font-semibold rounded-xl hover:bg-secondary transition-colors">
             <Icon name="HomeIcon" size={16} />

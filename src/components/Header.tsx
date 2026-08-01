@@ -97,6 +97,12 @@ export default function Header() {
                 >
                   My Bookings
                 </Link>
+                <Link
+                  href="/account"
+                  className={`text-sm font-medium transition-colors hover:text-accent ${scrolled ? 'text-foreground' : 'text-white/90 hover:text-white'}`}
+                >
+                  Account
+                </Link>
                 <div className={scrolled ? 'text-foreground' : 'text-white'}>
                   <NotificationBell />
                 </div>
@@ -199,6 +205,13 @@ export default function Header() {
                     className="block w-full text-center px-6 py-4 border border-border text-foreground font-semibold rounded-2xl text-lg hover:bg-muted transition-colors"
                   >
                     My Bookings
+                  </Link>
+                  <Link
+                    href="/account"
+                    onClick={() => setMenuOpen(false)}
+                    className="block w-full text-center px-6 py-4 border border-border text-foreground font-semibold rounded-2xl text-lg hover:bg-muted transition-colors"
+                  >
+                    Account
                   </Link>
                   <button
                     onClick={handleSignOut}

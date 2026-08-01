@@ -12,6 +12,7 @@ const navItems = [
   { label: 'Tours', href: '/admin/tours', icon: 'MapIcon' },
   { label: 'Add Tour', href: '/admin/tours/new', icon: 'PlusCircleIcon' },
   { label: 'Bookings', href: '/admin/bookings', icon: 'CalendarIcon' },
+  { label: 'Analytics', href: '/admin/analytics', icon: 'ChartBarIcon' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
