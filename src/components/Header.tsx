@@ -90,6 +90,17 @@ export default function Header() {
                   </div>
                   <span>{displayName}</span>
                 </div>
+                {(user?.user_metadata?.role === 'admin' || user?.app_metadata?.role === 'admin') && (
+                  <Link
+                    href="/admin/tours"
+                    className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${
+                      scrolled
+                        ? 'border-primary text-primary hover:bg-primary hover:text-white' :'border-white/40 text-white/80 hover:border-white hover:text-white'
+                    }`}
+                  >
+                    Admin
+                  </Link>
+                )}
                 <button
                   onClick={handleSignOut}
                   className={`text-sm font-medium transition-colors hover:text-accent ${scrolled ? 'text-muted-foreground' : 'text-white/70 hover:text-white'}`}
