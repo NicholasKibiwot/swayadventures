@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AppLogo from '@/components/ui/AppLogo';
 import Icon from '@/components/ui/AppIcon';
 import { useAuth } from '@/contexts/AuthContext';
+import NotificationBell from '@/components/NotificationBell';
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -96,6 +97,9 @@ export default function Header() {
                 >
                   My Bookings
                 </Link>
+                <div className={scrolled ? 'text-foreground' : 'text-white'}>
+                  <NotificationBell />
+                </div>
                 {(user?.user_metadata?.role === 'admin' || user?.app_metadata?.role === 'admin') && (
                   <Link
                     href="/admin/tours"

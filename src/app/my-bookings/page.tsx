@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Icon from '@/components/ui/AppIcon';
+import { TourReviewForm } from '@/components/TourReviews';
 
 interface BookingDetail {
   id: string;
@@ -21,6 +22,7 @@ interface BookingDetail {
   notes: string | null;
   createdAt: string;
   trip: {
+    id: string;
     title: string;
     durationDays: number;
     tripType: string;
@@ -77,7 +79,7 @@ export default function MyBookingsPage() {
         .select(`
           id, reference, bookingType, guests, totalAmount, currency,
           status, payment_status, notes, createdAt,
-          trip:Trip(title, durationDays, tripType),
+          trip:Trip(id, title, durationDays, tripType),
           payments:Payment(id, amount, status, method, gateway, paidAt)
         `)
         .eq('user_id', user.id)
@@ -321,6 +323,17 @@ export default function MyBookingsPage() {
                           <div className="mt-4 flex items-center gap-2 p-3 bg-purple-50 rounded-xl text-sm text-purple-700">
                             <Icon name="ArrowUturnLeftIcon" size={16} />
                             <span>A refund has been processed for this booking. Please allow 5–10 business days for it to reflect.</span>
+                          </div>
+                        )}
+
+                        {/* Review form for completed tours */}
+                        {booking.status === 'COMPLETED' && booking.trip?.id && (
+                          <div className="mt-4 pt-4 border-t border-border">
+                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Leave a Review</p>
+                            <TourReviewForm
+                              tripId={booking.trip.id}
+                              bookingId={booking.id}
+                            />
                           </div>
                         )}
                       </div>

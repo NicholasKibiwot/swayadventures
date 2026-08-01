@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import AppImage from '@/components/ui/AppImage';
 import Icon from '@/components/ui/AppIcon';
+import { createClient } from '@/lib/supabase/client';
 
 const allTours = [
 {
@@ -231,6 +232,35 @@ export default function ToursClientPage() {
 }
 
 function TourCard({ tour }: {tour: typeof allTours[0];}) {
+  const [liveRating, setLiveRating] = useState<{ avg: number; count: number } | null>(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    // Try to fetch live DB rating if tour has a slug-based id
+    const fetchRating = async () => {
+      // Match by title slug pattern — look up Trip by title
+      const { data } = await supabase
+        .from('Trip')
+        .select('id')
+        .ilike('title', tour.title)
+        .maybeSingle();
+      if (!data?.id) return;
+      const { data: reviews } = await supabase
+        .from('TourReview')
+        .select('rating')
+        .eq('trip_id', data.id)
+        .eq('is_approved', true);
+      if (reviews && reviews.length > 0) {
+        const avg = reviews.reduce((s: number, r: any) => s + r.rating, 0) / reviews.length;
+        setLiveRating({ avg: Math.round(avg * 10) / 10, count: reviews.length });
+      }
+    };
+    fetchRating();
+  }, [tour.title]);
+
+  const displayRating = liveRating?.avg ?? tour.rating;
+  const displayCount = liveRating?.count ?? tour.reviews;
+
   return (
     <div className="tour-card-item group rounded-2xl overflow-hidden bg-card border border-border hover:shadow-card-hover hover-lift flex flex-col">
       {/* Image */}
@@ -290,8 +320,8 @@ function TourCard({ tour }: {tour: typeof allTours[0];}) {
           </span>
           <span className="flex items-center gap-1.5 ml-auto">
             <Icon name="StarIcon" size={13} variant="solid" className="text-amber-400" />
-            <span className="font-medium text-foreground">{tour.rating}</span>
-            <span className="text-xs">({tour.reviews})</span>
+            <span className="font-medium text-foreground">{displayRating}</span>
+            <span className="text-xs">({displayCount})</span>
           </span>
         </div>
 
@@ -306,16 +336,14 @@ function TourCard({ tour }: {tour: typeof allTours[0];}) {
         </ul>
 
         {/* CTA */}
-        <div className="mt-auto">
+        <div className="mt-auto flex gap-2">
           <Link
             href="/booking"
-            className="flex items-center justify-center gap-2 w-full py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-secondary transition-colors">
-            
+            className="flex items-center justify-center gap-2 flex-1 py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-secondary transition-colors">
             Book This Tour
             <Icon name="ArrowRightIcon" size={15} />
           </Link>
         </div>
       </div>
     </div>);
-
 }
