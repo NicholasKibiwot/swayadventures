@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AppLogo from '@/components/ui/AppLogo';
 import Icon from '@/components/ui/AppIcon';
 import { useAuth } from '@/contexts/AuthContext';
+import NotificationBell from '@/components/NotificationBell';
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -90,6 +91,32 @@ export default function Header() {
                   </div>
                   <span>{displayName}</span>
                 </div>
+                <Link
+                  href="/my-bookings"
+                  className={`text-sm font-medium transition-colors hover:text-accent ${scrolled ? 'text-foreground' : 'text-white/90 hover:text-white'}`}
+                >
+                  My Bookings
+                </Link>
+                <Link
+                  href="/account"
+                  className={`text-sm font-medium transition-colors hover:text-accent ${scrolled ? 'text-foreground' : 'text-white/90 hover:text-white'}`}
+                >
+                  Account
+                </Link>
+                <div className={scrolled ? 'text-foreground' : 'text-white'}>
+                  <NotificationBell />
+                </div>
+                {(user?.user_metadata?.role === 'admin' || user?.app_metadata?.role === 'admin') && (
+                  <Link
+                    href="/admin/tours"
+                    className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${
+                      scrolled
+                        ? 'border-primary text-primary hover:bg-primary hover:text-white' :'border-white/40 text-white/80 hover:border-white hover:text-white'
+                    }`}
+                  >
+                    Admin
+                  </Link>
+                )}
                 <button
                   onClick={handleSignOut}
                   className={`text-sm font-medium transition-colors hover:text-accent ${scrolled ? 'text-muted-foreground' : 'text-white/70 hover:text-white'}`}
@@ -172,6 +199,20 @@ export default function Header() {
                       <p className="text-xs text-muted-foreground">{user?.email}</p>
                     </div>
                   </div>
+                  <Link
+                    href="/my-bookings"
+                    onClick={() => setMenuOpen(false)}
+                    className="block w-full text-center px-6 py-4 border border-border text-foreground font-semibold rounded-2xl text-lg hover:bg-muted transition-colors"
+                  >
+                    My Bookings
+                  </Link>
+                  <Link
+                    href="/account"
+                    onClick={() => setMenuOpen(false)}
+                    className="block w-full text-center px-6 py-4 border border-border text-foreground font-semibold rounded-2xl text-lg hover:bg-muted transition-colors"
+                  >
+                    Account
+                  </Link>
                   <button
                     onClick={handleSignOut}
                     className="block w-full text-center px-6 py-4 border border-border text-foreground font-semibold rounded-2xl text-lg hover:bg-muted transition-colors"

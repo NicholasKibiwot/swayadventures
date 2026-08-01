@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import AppImage from '@/components/ui/AppImage';
 import Icon from '@/components/ui/AppIcon';
+import { createClient } from '@/lib/supabase/client';
 
 const allTours = [
 {
@@ -16,7 +17,7 @@ const allTours = [
   rating: 4.9,
   reviews: 142,
   category: 'safari',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_16d806e5f-1772249664669.png",
+  image: "/assets/images/tours-maasai-mara-migration.png",
   alt: 'Wildebeest migration crossing Mara River with dramatic splashing water, dark storm clouds overhead',
   badge: 'Best Seller',
   highlights: ['Big Five sightings', 'Hot air balloon optional', 'Expert Maasai guides']
@@ -31,7 +32,7 @@ const allTours = [
   rating: 4.8,
   reviews: 89,
   category: 'beach',
-  image: "https://images.unsplash.com/photo-1591795001901-6c99ec0e6fee",
+  image: "/assets/images/tours-diani-beach.jpg",
   alt: 'White sand beach with turquoise Indian Ocean water and palm trees swaying in tropical breeze',
   badge: null,
   highlights: ['Snorkeling & diving', 'Dhow sunset cruise', 'Colobus monkey sanctuary']
@@ -46,7 +47,7 @@ const allTours = [
   rating: 4.7,
   reviews: 63,
   category: 'retreat',
-  image: "https://images.unsplash.com/photo-1498235100799-e1d92d0f4d88",
+  image: "/assets/images/tours-mount-kenya.jpg",
   alt: 'Snow-capped peaks of Mount Kenya with dramatic rocky ridgeline and alpine moorland below',
   badge: 'Adventure',
   highlights: ['Summit Point Lenana', 'Alpine flora & fauna', 'Mountain hut accommodation']
@@ -61,7 +62,7 @@ const allTours = [
   rating: 4.9,
   reviews: 107,
   category: 'safari',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_164128e27-1775636642870.png",
+  image: "/assets/images/tours-amboseli-elephants.png",
   alt: 'Large elephant family walking across open plains with snow-capped Kilimanjaro in background',
   badge: null,
   highlights: ['Largest elephant herds in Africa', 'Kilimanjaro backdrop', 'Maasai cultural visit']
@@ -76,7 +77,7 @@ const allTours = [
   rating: 4.8,
   reviews: 54,
   category: 'beach',
-  image: "https://images.unsplash.com/photo-1717916434211-2e17c91cb0cc",
+  image: "/assets/images/tours-lamu-town.jpg",
   alt: 'Ancient Swahili town narrow streets with ornate wooden doors and white-washed walls in warm light',
   badge: 'UNESCO Site',
   highlights: ['UNESCO World Heritage site', 'Traditional dhow sailing', 'Swahili cooking class']
@@ -91,7 +92,7 @@ const allTours = [
   rating: 4.6,
   reviews: 78,
   category: 'safari',
-  image: "https://images.unsplash.com/photo-1667389865371-c4d90c369ffa",
+  image: "/assets/images/tours-tsavo-elephants.jpg",
   alt: 'Red dust-covered elephants at waterhole in Tsavo National Park with dry acacia trees',
   badge: null,
   highlights: ['Famous red elephants', 'Mzima Springs', 'Lugard Falls']
@@ -106,7 +107,7 @@ const allTours = [
   rating: 4.7,
   reviews: 95,
   category: 'retreat',
-  image: "https://images.unsplash.com/photo-1558328713-bc904dce9bf4",
+  image: "/assets/images/tours-naivasha-lake.jpg",
   alt: 'Serene lake with flamingos in shallow water, green hills and cloudy sky reflected in calm surface',
   badge: 'Weekend Special',
   highlights: ['Hippo boat safari', 'Crescent Island walking safari', 'Hell\'s Gate cycling']
@@ -121,7 +122,7 @@ const allTours = [
   rating: 4.8,
   reviews: 42,
   category: 'safari',
-  image: "https://images.unsplash.com/photo-1703874567931-ab49447588cd",
+  image: "/assets/images/tours-samburu-giraffe.jpg",
   alt: 'Reticulated giraffe grazing in dry acacia woodland with distant blue mountains in northern Kenya',
   badge: 'Off the Beaten Path',
   highlights: ['Samburu Special Five', 'Ewaso Nyiro River camps', 'Samburu cultural immersion']
@@ -231,6 +232,35 @@ export default function ToursClientPage() {
 }
 
 function TourCard({ tour }: {tour: typeof allTours[0];}) {
+  const [liveRating, setLiveRating] = useState<{avg: number;count: number;} | null>(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    // Try to fetch live DB rating if tour has a slug-based id
+    const fetchRating = async () => {
+      // Match by title slug pattern — look up Trip by title
+      const { data } = await supabase.
+      from('Trip').
+      select('id').
+      ilike('title', tour.title).
+      maybeSingle();
+      if (!data?.id) return;
+      const { data: reviews } = await supabase.
+      from('TourReview').
+      select('rating').
+      eq('trip_id', data.id).
+      eq('is_approved', true);
+      if (reviews && reviews.length > 0) {
+        const avg = reviews.reduce((s: number, r: any) => s + r.rating, 0) / reviews.length;
+        setLiveRating({ avg: Math.round(avg * 10) / 10, count: reviews.length });
+      }
+    };
+    fetchRating();
+  }, [tour.title]);
+
+  const displayRating = liveRating?.avg ?? tour.rating;
+  const displayCount = liveRating?.count ?? tour.reviews;
+
   return (
     <div className="tour-card-item group rounded-2xl overflow-hidden bg-card border border-border hover:shadow-card-hover hover-lift flex flex-col">
       {/* Image */}
@@ -290,8 +320,8 @@ function TourCard({ tour }: {tour: typeof allTours[0];}) {
           </span>
           <span className="flex items-center gap-1.5 ml-auto">
             <Icon name="StarIcon" size={13} variant="solid" className="text-amber-400" />
-            <span className="font-medium text-foreground">{tour.rating}</span>
-            <span className="text-xs">({tour.reviews})</span>
+            <span className="font-medium text-foreground">{displayRating}</span>
+            <span className="text-xs">({displayCount})</span>
           </span>
         </div>
 
@@ -306,16 +336,14 @@ function TourCard({ tour }: {tour: typeof allTours[0];}) {
         </ul>
 
         {/* CTA */}
-        <div className="mt-auto">
+        <div className="mt-auto flex gap-2">
           <Link
             href="/booking"
-            className="flex items-center justify-center gap-2 w-full py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-secondary transition-colors">
-            
+            className="flex items-center justify-center gap-2 flex-1 py-3 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-secondary transition-colors">
             Book This Tour
             <Icon name="ArrowRightIcon" size={15} />
           </Link>
         </div>
       </div>
     </div>);
-
 }

@@ -15,7 +15,7 @@ const tours = [
   rating: 4.9,
   reviews: 142,
   category: 'safari',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_199e15cc9-1772249597155.png",
+  image: "/assets/images/tour-maasai-mara-migration.png",
   alt: 'Wildebeest crossing Mara River during Great Migration with dramatic splashing water and dramatic sky',
   badge: 'Best Seller'
 },
@@ -28,7 +28,7 @@ const tours = [
   rating: 4.8,
   reviews: 89,
   category: 'beach',
-  image: "https://images.unsplash.com/photo-1669517270484-df54ad8d54c8",
+  image: "/assets/images/tour-diani-beach.jpg",
   alt: 'Pristine white sand beach with turquoise water and palm trees in bright tropical sunlight',
   badge: null
 },
@@ -41,7 +41,7 @@ const tours = [
   rating: 4.7,
   reviews: 63,
   category: 'retreat',
-  image: "https://images.unsplash.com/photo-1701017684891-7eee65ea121d",
+  image: "/assets/images/tour-mount-kenya-trek.jpg",
   alt: 'Snow-capped mountain peaks with dramatic rocky terrain and alpine vegetation in morning light',
   badge: 'Adventure'
 },
@@ -54,7 +54,7 @@ const tours = [
   rating: 4.9,
   reviews: 107,
   category: 'safari',
-  image: "https://images.unsplash.com/photo-1727252734589-147155b958be",
+  image: "/assets/images/tour-amboseli-elephants.jpg",
   alt: 'Large elephant herd on dusty plains with Mount Kilimanjaro clearly visible in background at sunset',
   badge: null
 },
@@ -67,7 +67,7 @@ const tours = [
   rating: 4.8,
   reviews: 54,
   category: 'beach',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_1b45a1896-1778354456427.png",
+  image: "/assets/images/tour-lamu-island.png",
   alt: 'Ancient Swahili architecture of Lamu Old Town with narrow streets and ornate wooden doors in warm afternoon light',
   badge: 'UNESCO Site'
 },
@@ -80,7 +80,7 @@ const tours = [
   rating: 4.6,
   reviews: 78,
   category: 'safari',
-  image: "https://images.unsplash.com/photo-1666112308252-807feffd672d",
+  image: "/assets/images/tour-tsavo-elephants.jpg",
   alt: 'Red dust-covered elephants at a waterhole in Tsavo with dry acacia trees in warm afternoon light',
   badge: null
 }];

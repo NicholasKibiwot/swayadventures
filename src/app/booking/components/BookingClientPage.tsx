@@ -791,7 +791,7 @@ function BookingSummary({
             {/* Tour image thumbnail */}
             <div className="relative h-36 rounded-2xl overflow-hidden mb-5">
               <AppImage
-              src="https://img.rocket.new/generatedImages/rocket_gen_img_12268b097-1774353475904.png"
+              src="/assets/images/hero-savanna-sunrise.png"
               alt="Kenyan safari landscape with golden savanna, acacia trees and dramatic sunset sky"
               fill
               sizes="400px"
@@ -956,6 +956,12 @@ function BookingSuccess({
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            href={`/booking/invoice/${bookingRef}`}
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-accent text-white font-semibold rounded-xl hover:bg-amber-600 transition-colors">
+            <Icon name="DocumentTextIcon" size={16} />
+            View Invoice
+          </Link>
           <Link
             href="/"
             className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-primary text-white font-semibold rounded-xl hover:bg-secondary transition-colors">
