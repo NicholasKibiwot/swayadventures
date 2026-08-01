@@ -90,6 +90,12 @@ export default function Header() {
                   </div>
                   <span>{displayName}</span>
                 </div>
+                <Link
+                  href="/my-bookings"
+                  className={`text-sm font-medium transition-colors hover:text-accent ${scrolled ? 'text-foreground' : 'text-white/90 hover:text-white'}`}
+                >
+                  My Bookings
+                </Link>
                 {(user?.user_metadata?.role === 'admin' || user?.app_metadata?.role === 'admin') && (
                   <Link
                     href="/admin/tours"
@@ -183,6 +189,13 @@ export default function Header() {
                       <p className="text-xs text-muted-foreground">{user?.email}</p>
                     </div>
                   </div>
+                  <Link
+                    href="/my-bookings"
+                    onClick={() => setMenuOpen(false)}
+                    className="block w-full text-center px-6 py-4 border border-border text-foreground font-semibold rounded-2xl text-lg hover:bg-muted transition-colors"
+                  >
+                    My Bookings
+                  </Link>
                   <button
                     onClick={handleSignOut}
                     className="block w-full text-center px-6 py-4 border border-border text-foreground font-semibold rounded-2xl text-lg hover:bg-muted transition-colors"
