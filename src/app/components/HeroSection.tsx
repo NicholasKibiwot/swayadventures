@@ -31,7 +31,7 @@ export default function HeroSection() {
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <AppImage
-          src="https://img.rocket.new/generatedImages/rocket_gen_img_12268b097-1774353475904.png"
+          src="/assets/images/hero-savanna-sunrise.png"
           alt="Golden savanna at sunrise with acacia trees silhouetted against amber sky, vast open plains stretching to the horizon"
           fill
           priority

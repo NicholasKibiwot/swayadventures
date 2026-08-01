@@ -10,7 +10,7 @@ const hotels = [
   location: 'Nairobi CBD',
   stars: 5,
   priceFrom: 180,
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_149bfabd5-1772185253146.png",
+  image: "/assets/images/hotel-sarova-stanley.png",
   alt: 'Grand colonial hotel facade with manicured gardens and warm evening lighting in Nairobi'
 },
 {
@@ -18,7 +18,7 @@ const hotels = [
   location: 'Watamu, Coast',
   stars: 5,
   priceFrom: 320,
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_1308fe107-1772752325140.png",
+  image: "/assets/images/hotel-hemingways-watamu.png",
   alt: 'Luxury beachfront resort with infinity pool overlooking turquoise Indian Ocean at sunset'
 },
 {
@@ -26,7 +26,7 @@ const hotels = [
   location: 'Maasai Mara',
   stars: 5,
   priceFrom: 890,
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_1fad7d61b-1772249789689.png",
+  image: "/assets/images/hotel-angama-mara.png",
   alt: 'Luxury tented camp on escarpment edge overlooking vast Mara plains at golden hour'
 },
 {
@@ -34,7 +34,7 @@ const hotels = [
   location: 'Karen, Nairobi',
   stars: 5,
   priceFrom: 650,
-  image: "https://images.unsplash.com/photo-1603877797446-9a86f1076872",
+  image: "/assets/images/hotel-giraffe-manor.jpg",
   alt: 'Elegant manor house surrounded by lush tropical gardens with giraffe head visible through window'
 }];
 

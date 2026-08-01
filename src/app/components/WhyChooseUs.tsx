@@ -56,7 +56,7 @@ export default function WhyChooseUs() {
             <div className="relative">
               <div className="img-reveal rounded-3xl overflow-hidden aspect-[4/5]">
                 <AppImage
-                  src="https://img.rocket.new/generatedImages/rocket_gen_img_1728a0b60-1775670014180.png"
+                  src="/assets/images/why-choose-us-guide.png"
                   alt="Safari guide in tan jacket pointing to wildlife tracks on golden savanna, warm afternoon light"
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"

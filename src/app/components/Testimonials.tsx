@@ -12,7 +12,7 @@ const testimonials = [
   tour: 'Maasai Mara Safari',
   rating: 5,
   quote: "SwayAdventures made our Maasai Mara trip absolutely seamless. Our guide Joseph knew exactly where the lions were at sunrise — I\'ve never felt so close to wild Africa. Worth every shilling.",
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_1050f9f02-1777846977357.png",
+  image: "/assets/images/testimonial-amelia.png",
   alt: 'Portrait of smiling woman with light brown hair outdoors'
 },
 {
@@ -22,7 +22,7 @@ const testimonials = [
   tour: 'Amboseli Elephant Safari',
   rating: 5,
   quote: "Seeing Kilimanjaro at dawn with 300 elephants in the foreground was a moment I'll never forget. The camp was luxury, the food was incredible, and the team handled everything perfectly.",
-  image: "https://images.unsplash.com/photo-1606070348308-8f4ed2f9a06d",
+  image: "/assets/images/testimonial-rajiv.jpg",
   alt: 'Portrait of smiling man with dark hair in casual shirt'
 },
 {
@@ -32,7 +32,7 @@ const testimonials = [
   tour: 'Diani Beach Getaway',
   rating: 5,
   quote: "As a Kenyan, I thought I knew my own country — but SwayAdventures showed me Diani in a completely new light. The boutique hotel they chose was extraordinary. Already planning my next trip.",
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_1e91f72fe-1772071256926.png",
+  image: "/assets/images/testimonial-sophie.png",
   alt: 'Portrait of smiling woman with natural hair in bright daylight'
 }];
 

@@ -16,7 +16,7 @@ const allTours = [
   rating: 4.9,
   reviews: 142,
   category: 'safari',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_16d806e5f-1772249664669.png",
+  image: "/assets/images/tours-maasai-mara-migration.png",
   alt: 'Wildebeest migration crossing Mara River with dramatic splashing water, dark storm clouds overhead',
   badge: 'Best Seller',
   highlights: ['Big Five sightings', 'Hot air balloon optional', 'Expert Maasai guides']
@@ -31,7 +31,7 @@ const allTours = [
   rating: 4.8,
   reviews: 89,
   category: 'beach',
-  image: "https://images.unsplash.com/photo-1591795001901-6c99ec0e6fee",
+  image: "/assets/images/tours-diani-beach.jpg",
   alt: 'White sand beach with turquoise Indian Ocean water and palm trees swaying in tropical breeze',
   badge: null,
   highlights: ['Snorkeling & diving', 'Dhow sunset cruise', 'Colobus monkey sanctuary']
@@ -46,7 +46,7 @@ const allTours = [
   rating: 4.7,
   reviews: 63,
   category: 'retreat',
-  image: "https://images.unsplash.com/photo-1498235100799-e1d92d0f4d88",
+  image: "/assets/images/tours-mount-kenya.jpg",
   alt: 'Snow-capped peaks of Mount Kenya with dramatic rocky ridgeline and alpine moorland below',
   badge: 'Adventure',
   highlights: ['Summit Point Lenana', 'Alpine flora & fauna', 'Mountain hut accommodation']
@@ -61,7 +61,7 @@ const allTours = [
   rating: 4.9,
   reviews: 107,
   category: 'safari',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_164128e27-1775636642870.png",
+  image: "/assets/images/tours-amboseli-elephants.png",
   alt: 'Large elephant family walking across open plains with snow-capped Kilimanjaro in background',
   badge: null,
   highlights: ['Largest elephant herds in Africa', 'Kilimanjaro backdrop', 'Maasai cultural visit']
@@ -76,7 +76,7 @@ const allTours = [
   rating: 4.8,
   reviews: 54,
   category: 'beach',
-  image: "https://images.unsplash.com/photo-1717916434211-2e17c91cb0cc",
+  image: "/assets/images/tours-lamu-town.jpg",
   alt: 'Ancient Swahili town narrow streets with ornate wooden doors and white-washed walls in warm light',
   badge: 'UNESCO Site',
   highlights: ['UNESCO World Heritage site', 'Traditional dhow sailing', 'Swahili cooking class']
@@ -91,7 +91,7 @@ const allTours = [
   rating: 4.6,
   reviews: 78,
   category: 'safari',
-  image: "https://images.unsplash.com/photo-1667389865371-c4d90c369ffa",
+  image: "/assets/images/tours-tsavo-elephants.jpg",
   alt: 'Red dust-covered elephants at waterhole in Tsavo National Park with dry acacia trees',
   badge: null,
   highlights: ['Famous red elephants', 'Mzima Springs', 'Lugard Falls']
@@ -106,7 +106,7 @@ const allTours = [
   rating: 4.7,
   reviews: 95,
   category: 'retreat',
-  image: "https://images.unsplash.com/photo-1558328713-bc904dce9bf4",
+  image: "/assets/images/tours-naivasha-lake.jpg",
   alt: 'Serene lake with flamingos in shallow water, green hills and cloudy sky reflected in calm surface',
   badge: 'Weekend Special',
   highlights: ['Hippo boat safari', 'Crescent Island walking safari', 'Hell\'s Gate cycling']
@@ -121,7 +121,7 @@ const allTours = [
   rating: 4.8,
   reviews: 42,
   category: 'safari',
-  image: "https://images.unsplash.com/photo-1703874567931-ab49447588cd",
+  image: "/assets/images/tours-samburu-giraffe.jpg",
   alt: 'Reticulated giraffe grazing in dry acacia woodland with distant blue mountains in northern Kenya',
   badge: 'Off the Beaten Path',
   highlights: ['Samburu Special Five', 'Ewaso Nyiro River camps', 'Samburu cultural immersion']

@@ -791,7 +791,7 @@ function BookingSummary({
             {/* Tour image thumbnail */}
             <div className="relative h-36 rounded-2xl overflow-hidden mb-5">
               <AppImage
-              src="https://img.rocket.new/generatedImages/rocket_gen_img_12268b097-1774353475904.png"
+              src="/assets/images/hero-savanna-sunrise.png"
               alt="Kenyan safari landscape with golden savanna, acacia trees and dramatic sunset sky"
               fill
               sizes="400px"

@@ -11,7 +11,7 @@ const categories = [
   title: 'Personal Getaways',
   subtitle: 'Solo & Couples',
   description: 'Intimate escapes to Kenya\'s most breathtaking coastal and highland retreats.',
-  image: "https://images.unsplash.com/photo-1633421332483-1aa89f0c6b9a",
+  image: "/assets/images/category-personal-getaways.jpg",
   alt: 'Turquoise ocean at Diani Beach with white sand and palm trees in bright sunshine',
   count: '18 tours',
   icon: 'HeartIcon'
@@ -21,7 +21,7 @@ const categories = [
   title: 'Group Retreats',
   subtitle: 'Friends & Corporate',
   description: 'Shared adventures and wellness experiences designed for groups of all sizes.',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_1799ef0a6-1772251066851.png",
+  image: "/assets/images/category-group-retreats.png",
   alt: 'Luxury safari camp tents in open savanna at golden hour with warm amber light',
   count: '12 tours',
   icon: 'UsersIcon'
@@ -31,7 +31,7 @@ const categories = [
   title: 'Luxury Safaris',
   subtitle: 'Wildlife & Wilderness',
   description: 'Exclusive Big Five encounters in Kenya\'s iconic national parks and conservancies.',
-  image: "https://images.unsplash.com/photo-1727252734589-147155b958be",
+  image: "/assets/images/tour-amboseli-elephants.jpg",
   alt: 'Herd of elephants walking across dusty savanna plains with Mount Kilimanjaro in background',
   count: '20 tours',
   icon: 'SparklesIcon'
