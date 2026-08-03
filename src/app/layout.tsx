@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'SwayAdventures — Kenya Travel',
     description: 'Expert-guided Kenya safaris, beaches & retreats. Trusted by 1000+ travelers.',
-    images: [{ url: '/assets/images/app_logo.png', width: 1200, height: 630 }],
+    images: [{ url: '/assets/images/Untitled_design-removebg-preview-1785745430014.png', width: 1200, height: 630 }],
   },
 };
 
