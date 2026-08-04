@@ -1,0 +1,221 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client" // Prisma v7 provider
+  output   = "../lib/generated/prisma" // Prisma v7 requires an output path
+}
+
+datasource db {
+  provider = "postgresql"
+  // url and directUrl are now in prisma.config.ts
+}
+
+model Destination {
+  id           String        @id @default(cuid())
+  name         String
+  slug         String        @unique
+  region       String
+  summary      String
+  heroImage    String
+  bestMonths   String[]
+  tripTypes    String[]
+  isFeatured   Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  trips        Trip[]
+  partnerStays PartnerStay[]
+}
+
+model Trip {
+  id            String          @id @default(cuid())
+  destinationId String
+  destination   Destination     @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  title         String
+  slug          String          @unique
+  summary       String
+  description   String
+  durationDays  Int
+  basePrice     Int             
+  currency      String          @default("KES")
+  tripType      String          
+  difficulty    String          
+  groupSizeMin  Int             @default(1)
+  groupSizeMax  Int             @default(20)
+  isFeatured    Boolean         @default(false)
+  isActive      Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  images        TripImage[]
+  itineraries   Itinerary[]
+  inclusions    TripInclusion[]
+  dates         TripDate[]
+  stayOptions   TripStayOption[]
+  bookings      Booking[]
+}
+
+model TripImage {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String
+  sortOrder Int      @default(0)
+  tripId    String
+  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+}
+
+model Itinerary {
+  id         String   @id @default(cuid())
+  dayNumber  Int
+  title      String
+  details    String
+  tripId     String
+  trip       Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+}
+
+model TripInclusion {
+  id       String  @id @default(cuid())
+  label    String
+  included Boolean @default(true)
+  tripId   String
+  trip     Trip    @relation(fields: [tripId], references: [id], onDelete: Cascade)
+}
+
+model TripDate {
+  id             String    @id @default(cuid())
+  tripId         String
+  trip           Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  startDate      DateTime
+  endDate        DateTime
+  capacity       Int
+  spotsLeft      Int
+  priceOverride  Int?
+  bookings       Booking[]
+}
+
+model PartnerStay {
+  id            String             @id @default(cuid())
+  name          String
+  slug          String             @unique
+  destinationId String
+  destination   Destination        @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  type          String
+  starRating    Int                @default(3)
+  description   String
+  amenities     String[]
+  isPartner     Boolean            @default(true)
+  isActive      Boolean            @default(true)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  images        PartnerStayImage[]
+  stayOptions   TripStayOption[]
+}
+
+model PartnerStayImage {
+  id            String      @id @default(cuid())
+  url           String
+  alt           String
+  sortOrder     Int         @default(0)
+  partnerStayId String
+  partnerStay   PartnerStay @relation(fields: [partnerStayId], references: [id], onDelete: Cascade)
+}
+
+model TripStayOption {
+  id            String      @id @default(cuid())
+  tripId        String
+  trip          Trip        @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  partnerStayId String
+  partnerStay   PartnerStay @relation(fields: [partnerStayId], references: [id], onDelete: Cascade)
+  isIncluded    Boolean     @default(false)
+  isOptional    Boolean     @default(true)
+  extraCost     Int         @default(0)
+  bookings      Booking[]
+}
+
+model Customer {
+  id        String    @id @default(cuid())
+  fullName  String
+  phone     String
+  email     String?   @unique
+  country   String?   @default("KE")
+  createdAt DateTime  @default(now())
+  bookings  Booking[]
+  inquiries Inquiry[]
+}
+
+model Booking {
+  id           String           @id @default(cuid())
+  reference    String           @unique @default(cuid())
+  customerId   String
+  customer     Customer         @relation(fields: [customerId], references: [id])
+  tripId       String
+  trip         Trip             @relation(fields: [tripId], references: [id])
+  tripDateId   String
+  tripDate     TripDate         @relation(fields: [tripDateId], references: [id])
+  stayOptionId String?
+  stayOption   TripStayOption?  @relation(fields: [stayOptionId], references: [id])
+  bookingType  String
+  guests       Int              @default(1)
+  totalAmount  Int
+  currency     String           @default("KES")
+  status       String           @default("PENDING")
+  notes        String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  payment      Payment?
+}
+
+model Payment {
+  id               String    @id @default(cuid())
+  bookingId        String    @unique
+  booking          Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  gateway          String
+  amount           Int
+  currency         String    @default("KES")
+  status           String    @default("PENDING")
+  gatewayReference String?
+  method           String?
+  paidAt           DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Inquiry {
+  id         String    @id @default(cuid())
+  fullName   String
+  phone      String
+  email      String?
+  message    String
+  source     String?
+  status     String    @default("new")
+  createdAt  DateTime  @default(now())
+  customerId String?
+  customer   Customer? @relation(fields: [customerId], references: [id])
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  location  String?
+  rating    Int      @default(5)
+  message   String
+  tripName  String?
+  avatar    String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model HeroSlide {
+  id          String   @id @default(cuid())
+  title       String
+  subtitle    String?
+  location    String
+  region      String?
+  description String?
+  imagePath   String
+  cardImage   String?
+  ctaLabel    String   @default("Explore")
+  ctaLink     String
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
