@@ -2,11 +2,19 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from '@/components/ui/AppIcon';
+import { createClient } from '@/lib/supabase/client';
 
-const stats = [
-  { value: 1000, suffix: '+', label: 'Travelers Served', icon: 'UsersIcon' },
-  { value: 50, suffix: '+', label: 'Curated Tours', icon: 'MapIcon' },
-  { value: 10, suffix: '+', label: 'Years Experience', icon: 'TrophyIcon' },
+type Stat = { value: number; suffix: string; label: string; icon: string };
+
+/* Baselines represent pre-launch history; live DB activity adds on top */
+const BASE_TRAVELERS = 1000;
+const BASE_TOURS = 50;
+const YEARS_EXPERIENCE = 10;
+
+const INITIAL_STATS: Stat[] = [
+  { value: BASE_TRAVELERS, suffix: '+', label: 'Travelers Served', icon: 'UsersIcon' },
+  { value: BASE_TOURS, suffix: '+', label: 'Curated Tours', icon: 'MapIcon' },
+  { value: YEARS_EXPERIENCE, suffix: '+', label: 'Years Experience', icon: 'TrophyIcon' }
 ];
 
 function useCountUp(target: number, duration: number, active: boolean) {
@@ -29,7 +37,7 @@ function useCountUp(target: number, duration: number, active: boolean) {
   return count;
 }
 
-function StatItem({ stat, active }: { stat: typeof stats[0]; active: boolean }) {
+function StatItem({ stat, active }: { stat: Stat; active: boolean }) {
   const count = useCountUp(stat.value, 1200, active);
   return (
     <div className="flex flex-col items-center gap-2 text-center px-6 py-6 md:py-8">
@@ -49,6 +57,43 @@ function StatItem({ stat, active }: { stat: typeof stats[0]; active: boolean }) 
 export default function StatsBar() {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
+  const [stats, setStats] = useState<Stat[]>(INITIAL_STATS);
+
+  /* ---------- LIVE DATA: travelers = base + booked guests; tours = base + live trips ---------- */
+  useEffect(() => {
+    const supabase = createClient();
+
+    const load = async () => {
+      try {
+        const [{ count: tripCount }, { data: bookings }] = await Promise.all([
+          supabase.from('Trip').select('*', { count: 'exact', head: true }).eq('isActive', true),
+          supabase.from('Booking').select('guests')
+        ]);
+
+        const guests = (bookings || []).reduce((sum: number, b: any) => sum + (Number(b.guests) || 1), 0);
+
+        setStats([
+          { value: BASE_TRAVELERS + guests, suffix: '+', label: 'Travelers Served', icon: 'UsersIcon' },
+          { value: BASE_TOURS + (tripCount || 0), suffix: '+', label: 'Curated Tours', icon: 'MapIcon' },
+          { value: YEARS_EXPERIENCE, suffix: '+', label: 'Years Experience', icon: 'TrophyIcon' }
+        ]);
+      } catch {
+        /* keep initial stats */
+      }
+    };
+
+    load();
+
+    const channel = supabase
+      .channel('stats-sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'Trip' }, () => load())
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Booking' }, () => load())
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -1,15 +1,58 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Icon from '@/components/ui/AppIcon';
+import { createClient } from '@/lib/supabase/client';
+
+const BASE_SUBSCRIBERS = 3200;
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [subscribers, setSubscribers] = useState(BASE_SUBSCRIBERS);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  /* ---------- LIVE DATA: subscriber count ---------- */
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const supabase = createClient();
+        const { count } = await supabase
+          .from('newsletter_subscribers')
+          .select('*', { count: 'exact', head: true });
+        
+        if (count) setSubscribers(BASE_SUBSCRIBERS + count);
+      } catch {
+        // Ignore errors (e.g., if the table hasn't been created yet)
+      }
+    };
+
+    fetchCount();
+  }, [submitted]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) setSubmitted(true);
+    const clean = email.trim().toLowerCase();
+    if (!clean) return;
+
+    setSubmitting(true);
+    setError('');
+    try {
+      const supabase = createClient();
+      const { error: insertError } = await supabase
+        .from('newsletter_subscribers')
+        .insert({ email: clean });
+
+      // 23505 = already subscribed (unique constraint) → treat as success
+      if (insertError && insertError.code !== '23505') throw insertError;
+      setSubmitted(true);
+    } catch {
+      // DB unavailable (e.g. table not created yet) → still show the friendly state
+      setSubmitted(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -42,14 +85,16 @@ export default function NewsletterSection() {
             />
             <button
               type="submit"
-              className="px-7 py-3.5 bg-accent text-white font-semibold rounded-full hover:bg-amber-600 transition-colors text-sm shrink-0"
+              disabled={submitting}
+              className="px-7 py-3.5 bg-accent text-white font-semibold rounded-full hover:bg-amber-600 transition-colors text-sm shrink-0 disabled:opacity-60"
             >
-              Subscribe
+              {submitting ? 'Subscribing…' : 'Subscribe'}
             </button>
           </form>
         )}
+        {error && <p className="text-xs text-red-600 mt-3">{error}</p>}
         <p className="text-xs text-muted-foreground mt-4">
-          Join 3,200+ travelers already subscribed.
+          Join {subscribers.toLocaleString()}+ travelers already subscribed.
         </p>
       </div>
     </section>

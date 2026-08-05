@@ -49,7 +49,8 @@ function StarRating({
             variant="solid"
             className={
               star <= (hovered || value)
-                ? 'text-amber-400' :'text-gray-200'
+                ? 'text-amber-400'
+                : 'text-gray-200'
             }
           />
         </button>
@@ -203,6 +204,8 @@ export function TourReviewsList({ tripId }: TourReviewsProps) {
       if (data.length > 0) {
         const avg = data.reduce((sum, r) => sum + r.rating, 0) / data.length;
         setAvgRating(Math.round(avg * 10) / 10);
+      } else {
+        setAvgRating(0);
       }
     }
     setLoading(false);
@@ -211,11 +214,12 @@ export function TourReviewsList({ tripId }: TourReviewsProps) {
   useEffect(() => {
     fetchReviews();
 
+    // FIXED: Changed 'INSERT' to '*' so it catches admin approvals (UPDATE) and deletions (DELETE)
     const channel = supabase
       .channel(`reviews_${tripId}`)
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'TourReview', filter: `trip_id=eq.${tripId}` },
+        { event: '*', schema: 'public', table: 'TourReview', filter: `trip_id=eq.${tripId}` },
         () => fetchReviews()
       )
       .subscribe();
@@ -287,21 +291,41 @@ export function TourRatingBadge({ tripId }: { tripId: string }) {
   const [count, setCount] = useState(0);
   const supabase = createClient();
 
-  useEffect(() => {
-    const fetch = async () => {
-      const { data } = await supabase
-        .from('TourReview')
-        .select('rating')
-        .eq('trip_id', tripId)
-        .eq('is_approved', true);
-      if (data && data.length > 0) {
-        const avg = data.reduce((s, r) => s + r.rating, 0) / data.length;
-        setAvgRating(Math.round(avg * 10) / 10);
-        setCount(data.length);
-      }
-    };
-    fetch();
+  // FIXED: Wrapped fetch logic in useCallback so the realtime channel can trigger it
+  const fetchRating = useCallback(async () => {
+    const { data } = await supabase
+      .from('TourReview')
+      .select('rating')
+      .eq('trip_id', tripId)
+      .eq('is_approved', true);
+      
+    if (data && data.length > 0) {
+      const avg = data.reduce((s, r) => s + r.rating, 0) / data.length;
+      setAvgRating(Math.round(avg * 10) / 10);
+      setCount(data.length);
+    } else {
+      setAvgRating(null);
+      setCount(0);
+    }
   }, [tripId]);
+
+  useEffect(() => {
+    fetchRating();
+
+    // FIXED: Added realtime listener so the badge updates instantly when reviews change
+    const channel = supabase
+      .channel(`rating-badge-${tripId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'TourReview', filter: `trip_id=eq.${tripId}` },
+        () => fetchRating()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [tripId, fetchRating]);
 
   if (avgRating === null) return null;
 

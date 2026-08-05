@@ -1,34 +1,73 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AppImage from '@/components/ui/AppImage';
 import Icon from '@/components/ui/AppIcon';
+import { createClient } from '@/lib/supabase/client';
 
 const reasons = [
-{
-  icon: 'UserGroupIcon',
-  title: 'Expert Local Guides',
-  description: 'Our guides are born and raised in Kenya — they know every hidden track, watering hole, and sunrise viewpoint.'
-},
-{
-  icon: 'SparklesIcon',
-  title: 'Curated Experiences',
-  description: 'Every itinerary is handpicked and tested by our team. No cookie-cutter tours — only authentic Kenya.'
-},
-{
-  icon: 'ShieldCheckIcon',
-  title: 'Safe Travel, Always',
-  description: 'Fully licensed and insured. We partner with Kenya Tourism Board and maintain the highest safety standards.'
-},
-{
-  icon: 'CurrencyDollarIcon',
-  title: 'Transparent Pricing',
-  description: 'No hidden fees. Pay via M-Pesa, card, or PayPal. What you see is exactly what you pay.'
-}];
+  {
+    icon: 'UserGroupIcon',
+    title: 'Expert Local Guides',
+    description: 'Our guides are born and raised in Kenya — they know every hidden track, watering hole, and sunrise viewpoint.'
+  },
+  {
+    icon: 'SparklesIcon',
+    title: 'Curated Experiences',
+    description: 'Every itinerary is handpicked and tested by our team. No cookie-cutter tours — only authentic Kenya.'
+  },
+  {
+    icon: 'ShieldCheckIcon',
+    title: 'Safe Travel, Always',
+    description: 'Fully licensed and insured. We partner with Kenya Tourism Board and maintain the highest safety standards.'
+  },
+  {
+    icon: 'CurrencyDollarIcon',
+    title: 'Transparent Pricing',
+    description: 'No hidden fees. Pay via M-Pesa, card, or PayPal. What you see is exactly what you pay.'
+  }
+];
 
+/* Shown until real reviews exist in the DB */
+const FALLBACK_RECOMMEND = 98;
 
 export default function WhyChooseUs() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [recommend, setRecommend] = useState(FALLBACK_RECOMMEND);
+
+  /* ---------- LIVE DATA: % of approved reviews rated 4★ or 5★ ---------- */
+  useEffect(() => {
+    const supabase = createClient();
+
+    const load = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('TourReview')
+          .select('rating')
+          .eq('is_approved', true);
+
+        if (error || !data || data.length === 0) return; // keep fallback
+
+        const happy = data.filter((r: any) => Number(r.rating) >= 4).length;
+        const pct = Math.round((happy / data.length) * 100);
+        if (pct > 0) setRecommend(pct);
+      } catch {
+        /* keep fallback */
+      }
+    };
+
+    load();
+
+    // Real-time: recompute when a new review lands
+    const channel = supabase
+      .channel('why-choose-us-sync')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'TourReview' }, () => load())
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -61,11 +100,11 @@ export default function WhyChooseUs() {
                   fill
                   sizes="(max-width: 1024px) 100vw, 42vw"
                   className="object-cover" />
-                
               </div>
-              {/* Floating stat card */}
+
+              {/* Floating stat card — now LIVE from TourReview ratings */}
               <div className="absolute -bottom-6 -right-4 md:right-6 bg-primary text-white rounded-2xl p-5 shadow-xl max-w-[180px]">
-                <span className="font-display text-4xl font-semibold text-amber-300">98%</span>
+                <span className="font-display text-4xl font-semibold text-amber-300">{recommend}%</span>
                 <p className="text-white/80 text-xs mt-1 leading-snug">Travelers would recommend us</p>
               </div>
             </div>
@@ -87,10 +126,10 @@ export default function WhyChooseUs() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {reasons.map((reason, i) =>
-              <div
-                key={reason.title}
-                className={`scroll-reveal stagger-${i + 3} flex flex-col gap-3 p-5 rounded-2xl border border-border hover:border-accent/40 hover:bg-muted/50 transition-all duration-300 group`}>
-                
+                <div
+                  key={reason.title}
+                  className={`scroll-reveal stagger-${i + 3} flex flex-col gap-3 p-5 rounded-2xl border border-border hover:border-accent/40 hover:bg-muted/50 transition-all duration-300 group`}>
+
                   <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
                     <Icon name={reason.icon as 'UserGroupIcon'} size={20} className="text-accent" />
                   </div>
@@ -102,6 +141,6 @@ export default function WhyChooseUs() {
           </div>
         </div>
       </div>
-    </section>);
-
+    </section>
+  );
 }
