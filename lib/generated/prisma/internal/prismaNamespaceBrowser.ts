@@ -65,7 +65,12 @@ export const ModelName = {
   Payment: 'Payment',
   Inquiry: 'Inquiry',
   Testimonial: 'Testimonial',
-  HeroSlide: 'HeroSlide'
+  HeroSlide: 'HeroSlide',
+  TourReview: 'TourReview',
+  newsletter_subscribers: 'newsletter_subscribers',
+  notifications: 'notifications',
+  partner_hotels: 'partner_hotels',
+  user_profiles: 'user_profiles'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -211,6 +216,7 @@ export type TripStayOptionScalarFieldEnum = (typeof TripStayOptionScalarFieldEnu
 
 
 export const CustomerScalarFieldEnum = {
+  userId: 'userId',
   id: 'id',
   fullName: 'fullName',
   phone: 'phone',
@@ -236,7 +242,9 @@ export const BookingScalarFieldEnum = {
   status: 'status',
   notes: 'notes',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  payment_status: 'payment_status'
 } as const
 
 export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
@@ -307,6 +315,75 @@ export const HeroSlideScalarFieldEnum = {
 } as const
 
 export type HeroSlideScalarFieldEnum = (typeof HeroSlideScalarFieldEnum)[keyof typeof HeroSlideScalarFieldEnum]
+
+
+export const TourReviewScalarFieldEnum = {
+  id: 'id',
+  trip_id: 'trip_id',
+  user_id: 'user_id',
+  booking_id: 'booking_id',
+  rating: 'rating',
+  review_text: 'review_text',
+  reviewer_name: 'reviewer_name',
+  is_approved: 'is_approved',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type TourReviewScalarFieldEnum = (typeof TourReviewScalarFieldEnum)[keyof typeof TourReviewScalarFieldEnum]
+
+
+export const Newsletter_subscribersScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  created_at: 'created_at'
+} as const
+
+export type Newsletter_subscribersScalarFieldEnum = (typeof Newsletter_subscribersScalarFieldEnum)[keyof typeof Newsletter_subscribersScalarFieldEnum]
+
+
+export const NotificationsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  booking_id: 'booking_id',
+  is_read: 'is_read',
+  created_at: 'created_at'
+} as const
+
+export type NotificationsScalarFieldEnum = (typeof NotificationsScalarFieldEnum)[keyof typeof NotificationsScalarFieldEnum]
+
+
+export const Partner_hotelsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  location: 'location',
+  description: 'description',
+  stars: 'stars',
+  price_from: 'price_from',
+  image_url: 'image_url',
+  image_alt: 'image_alt',
+  is_active: 'is_active',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type Partner_hotelsScalarFieldEnum = (typeof Partner_hotelsScalarFieldEnum)[keyof typeof Partner_hotelsScalarFieldEnum]
+
+
+export const User_profilesScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  full_name: 'full_name',
+  role: 'role',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  phone: 'phone'
+} as const
+
+export type User_profilesScalarFieldEnum = (typeof User_profilesScalarFieldEnum)[keyof typeof User_profilesScalarFieldEnum]
 
 
 export const SortOrder = {

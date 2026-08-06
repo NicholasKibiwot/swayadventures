@@ -1,13 +1,10 @@
-// prisma/schema.prisma
-
 generator client {
-  provider = "prisma-client" // Prisma v7 provider
-  output   = "../lib/generated/prisma" // Prisma v7 requires an output path
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  // url and directUrl are now in prisma.config.ts
 }
 
 model Destination {
@@ -22,53 +19,54 @@ model Destination {
   isFeatured   Boolean       @default(false)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  trips        Trip[]
   partnerStays PartnerStay[]
+  trips        Trip[]
 }
 
 model Trip {
-  id            String          @id @default(cuid())
+  id            String           @id @default(cuid())
   destinationId String
-  destination   Destination     @relation(fields: [destinationId], references: [id], onDelete: Cascade)
   title         String
-  slug          String          @unique
+  slug          String           @unique
   summary       String
   description   String
   durationDays  Int
-  basePrice     Int             
-  currency      String          @default("KES")
-  tripType      String          
-  difficulty    String          
-  groupSizeMin  Int             @default(1)
-  groupSizeMax  Int             @default(20)
-  isFeatured    Boolean         @default(false)
-  isActive      Boolean         @default(true)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  images        TripImage[]
-  itineraries   Itinerary[]
-  inclusions    TripInclusion[]
-  dates         TripDate[]
-  stayOptions   TripStayOption[]
+  basePrice     Int
+  currency      String           @default("KES")
+  tripType      String
+  difficulty    String
+  groupSizeMin  Int              @default(1)
+  groupSizeMax  Int              @default(20)
+  isFeatured    Boolean          @default(false)
+  isActive      Boolean          @default(true)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
   bookings      Booking[]
+  itineraries   Itinerary[]
+  TourReview    TourReview[]
+  destination   Destination      @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  dates         TripDate[]
+  images        TripImage[]
+  inclusions    TripInclusion[]
+  stayOptions   TripStayOption[]
 }
 
 model TripImage {
-  id        String   @id @default(cuid())
+  id        String @id @default(cuid())
   url       String
   alt       String
-  sortOrder Int      @default(0)
+  sortOrder Int    @default(0)
   tripId    String
-  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  trip      Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
 }
 
 model Itinerary {
-  id         String   @id @default(cuid())
-  dayNumber  Int
-  title      String
-  details    String
-  tripId     String
-  trip       Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  id        String @id @default(cuid())
+  dayNumber Int
+  title     String
+  details   String
+  tripId    String
+  trip      Trip   @relation(fields: [tripId], references: [id], onDelete: Cascade)
 }
 
 model TripInclusion {
@@ -80,15 +78,15 @@ model TripInclusion {
 }
 
 model TripDate {
-  id             String    @id @default(cuid())
-  tripId         String
-  trip           Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
-  startDate      DateTime
-  endDate        DateTime
-  capacity       Int
-  spotsLeft      Int
-  priceOverride  Int?
-  bookings       Booking[]
+  id            String    @id @default(cuid())
+  tripId        String
+  startDate     DateTime
+  endDate       DateTime
+  capacity      Int
+  spotsLeft     Int
+  priceOverride Int?
+  bookings      Booking[]
+  trip          Trip      @relation(fields: [tripId], references: [id], onDelete: Cascade)
 }
 
 model PartnerStay {
@@ -96,7 +94,6 @@ model PartnerStay {
   name          String
   slug          String             @unique
   destinationId String
-  destination   Destination        @relation(fields: [destinationId], references: [id], onDelete: Cascade)
   type          String
   starRating    Int                @default(3)
   description   String
@@ -105,6 +102,7 @@ model PartnerStay {
   isActive      Boolean            @default(true)
   createdAt     DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
+  destination   Destination        @relation(fields: [destinationId], references: [id], onDelete: Cascade)
   images        PartnerStayImage[]
   stayOptions   TripStayOption[]
 }
@@ -121,16 +119,17 @@ model PartnerStayImage {
 model TripStayOption {
   id            String      @id @default(cuid())
   tripId        String
-  trip          Trip        @relation(fields: [tripId], references: [id], onDelete: Cascade)
   partnerStayId String
-  partnerStay   PartnerStay @relation(fields: [partnerStayId], references: [id], onDelete: Cascade)
   isIncluded    Boolean     @default(false)
   isOptional    Boolean     @default(true)
   extraCost     Int         @default(0)
   bookings      Booking[]
+  partnerStay   PartnerStay @relation(fields: [partnerStayId], references: [id], onDelete: Cascade)
+  trip          Trip        @relation(fields: [tripId], references: [id], onDelete: Cascade)
 }
 
 model Customer {
+    userId String? @unique @map("user_id") @db.Uuid
   id        String    @id @default(cuid())
   fullName  String
   phone     String
@@ -142,31 +141,36 @@ model Customer {
 }
 
 model Booking {
-  id           String           @id @default(cuid())
-  reference    String           @unique @default(cuid())
-  customerId   String
-  customer     Customer         @relation(fields: [customerId], references: [id])
-  tripId       String
-  trip         Trip             @relation(fields: [tripId], references: [id])
-  tripDateId   String
-  tripDate     TripDate         @relation(fields: [tripDateId], references: [id])
-  stayOptionId String?
-  stayOption   TripStayOption?  @relation(fields: [stayOptionId], references: [id])
-  bookingType  String
-  guests       Int              @default(1)
-  totalAmount  Int
-  currency     String           @default("KES")
-  status       String           @default("PENDING")
-  notes        String?
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
-  payment      Payment?
+  id             String          @id @default(cuid())
+  reference      String          @unique @default(cuid())
+  customerId     String
+  tripId         String
+  tripDateId     String
+  stayOptionId   String?
+  bookingType    String
+  guests         Int             @default(1)
+  totalAmount    Int
+  currency       String          @default("KES")
+  status         String          @default("PENDING")
+  notes          String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  userId         String?         @map("user_id") @db.Uuid
+  payment_status String          @default("pending")
+  customer       Customer        @relation(fields: [customerId], references: [id])
+  stayOption     TripStayOption? @relation(fields: [stayOptionId], references: [id])
+  tripDate       TripDate        @relation(fields: [tripDateId], references: [id])
+  trip           Trip            @relation(fields: [tripId], references: [id])
+  payment        Payment?
+  TourReview     TourReview[]
+  notifications  notifications[]
+
+  @@index([userId], map: "idx_booking_user_id")
 }
 
 model Payment {
   id               String    @id @default(cuid())
   bookingId        String    @unique
-  booking          Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
   gateway          String
   amount           Int
   currency         String    @default("KES")
@@ -176,6 +180,7 @@ model Payment {
   paidAt           DateTime?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
+  booking          Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 }
 
 model Inquiry {
@@ -218,4 +223,82 @@ model HeroSlide {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model TourReview {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  trip_id       String
+  user_id       String   @db.Uuid
+  booking_id    String?
+  rating        Int
+  review_text   String?
+  reviewer_name String   @default("")
+  is_approved   Boolean  @default(true)
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime @default(now()) @db.Timestamptz(6)
+  Booking       Booking? @relation(fields: [booking_id], references: [id], onUpdate: NoAction)
+  Trip          Trip     @relation(fields: [trip_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([user_id, trip_id], map: "idx_tourreview_user_trip")
+  @@index([trip_id], map: "idx_tourreview_trip_id")
+  @@index([user_id], map: "idx_tourreview_user_id")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model newsletter_subscribers {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email      String   @unique
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model notifications {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String?  @db.Uuid
+  type       String
+  title      String
+  message    String
+  booking_id String?
+  is_read    Boolean  @default(false)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  Booking    Booking? @relation(fields: [booking_id], references: [id], onUpdate: NoAction)
+
+  @@index([created_at(sort: Desc)], map: "idx_notifications_created_at")
+  @@index([user_id, is_read], map: "idx_notifications_is_read")
+  @@index([user_id], map: "idx_notifications_user_id")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model partner_hotels {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  location    String
+  description String    @default("")
+  stars       Int       @default(5)
+  price_from  Decimal   @default(0) @db.Decimal(10, 2)
+  image_url   String    @default("")
+  image_alt   String    @default("")
+  is_active   Boolean   @default(true)
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([created_at], map: "idx_partner_hotels_created_at")
+  @@index([is_active], map: "idx_partner_hotels_is_active")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_profiles {
+  id         String    @id @db.Uuid
+  email      String
+  full_name  String    @default("")
+  role       String    @default("user")
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+  phone      String    @default("")
+
+  @@index([id], map: "idx_user_profiles_id")
+  @@index([role], map: "idx_user_profiles_role")
 }

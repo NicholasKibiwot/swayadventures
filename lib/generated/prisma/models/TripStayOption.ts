@@ -224,9 +224,9 @@ export type TripStayOptionWhereInput = {
   isIncluded?: Prisma.BoolFilter<"TripStayOption"> | boolean
   isOptional?: Prisma.BoolFilter<"TripStayOption"> | boolean
   extraCost?: Prisma.IntFilter<"TripStayOption"> | number
-  trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
-  partnerStay?: Prisma.XOR<Prisma.PartnerStayScalarRelationFilter, Prisma.PartnerStayWhereInput>
   bookings?: Prisma.BookingListRelationFilter
+  partnerStay?: Prisma.XOR<Prisma.PartnerStayScalarRelationFilter, Prisma.PartnerStayWhereInput>
+  trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
 }
 
 export type TripStayOptionOrderByWithRelationInput = {
@@ -236,9 +236,9 @@ export type TripStayOptionOrderByWithRelationInput = {
   isIncluded?: Prisma.SortOrder
   isOptional?: Prisma.SortOrder
   extraCost?: Prisma.SortOrder
-  trip?: Prisma.TripOrderByWithRelationInput
-  partnerStay?: Prisma.PartnerStayOrderByWithRelationInput
   bookings?: Prisma.BookingOrderByRelationAggregateInput
+  partnerStay?: Prisma.PartnerStayOrderByWithRelationInput
+  trip?: Prisma.TripOrderByWithRelationInput
 }
 
 export type TripStayOptionWhereUniqueInput = Prisma.AtLeast<{
@@ -251,9 +251,9 @@ export type TripStayOptionWhereUniqueInput = Prisma.AtLeast<{
   isIncluded?: Prisma.BoolFilter<"TripStayOption"> | boolean
   isOptional?: Prisma.BoolFilter<"TripStayOption"> | boolean
   extraCost?: Prisma.IntFilter<"TripStayOption"> | number
-  trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
-  partnerStay?: Prisma.XOR<Prisma.PartnerStayScalarRelationFilter, Prisma.PartnerStayWhereInput>
   bookings?: Prisma.BookingListRelationFilter
+  partnerStay?: Prisma.XOR<Prisma.PartnerStayScalarRelationFilter, Prisma.PartnerStayWhereInput>
+  trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
 }, "id">
 
 export type TripStayOptionOrderByWithAggregationInput = {
@@ -287,9 +287,9 @@ export type TripStayOptionCreateInput = {
   isIncluded?: boolean
   isOptional?: boolean
   extraCost?: number
-  trip: Prisma.TripCreateNestedOneWithoutStayOptionsInput
-  partnerStay: Prisma.PartnerStayCreateNestedOneWithoutStayOptionsInput
   bookings?: Prisma.BookingCreateNestedManyWithoutStayOptionInput
+  partnerStay: Prisma.PartnerStayCreateNestedOneWithoutStayOptionsInput
+  trip: Prisma.TripCreateNestedOneWithoutStayOptionsInput
 }
 
 export type TripStayOptionUncheckedCreateInput = {
@@ -307,9 +307,9 @@ export type TripStayOptionUpdateInput = {
   isIncluded?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isOptional?: Prisma.BoolFieldUpdateOperationsInput | boolean
   extraCost?: Prisma.IntFieldUpdateOperationsInput | number
-  trip?: Prisma.TripUpdateOneRequiredWithoutStayOptionsNestedInput
-  partnerStay?: Prisma.PartnerStayUpdateOneRequiredWithoutStayOptionsNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutStayOptionNestedInput
+  partnerStay?: Prisma.PartnerStayUpdateOneRequiredWithoutStayOptionsNestedInput
+  trip?: Prisma.TripUpdateOneRequiredWithoutStayOptionsNestedInput
 }
 
 export type TripStayOptionUncheckedUpdateInput = {
@@ -502,8 +502,8 @@ export type TripStayOptionCreateWithoutTripInput = {
   isIncluded?: boolean
   isOptional?: boolean
   extraCost?: number
-  partnerStay: Prisma.PartnerStayCreateNestedOneWithoutStayOptionsInput
   bookings?: Prisma.BookingCreateNestedManyWithoutStayOptionInput
+  partnerStay: Prisma.PartnerStayCreateNestedOneWithoutStayOptionsInput
 }
 
 export type TripStayOptionUncheckedCreateWithoutTripInput = {
@@ -558,8 +558,8 @@ export type TripStayOptionCreateWithoutPartnerStayInput = {
   isIncluded?: boolean
   isOptional?: boolean
   extraCost?: number
-  trip: Prisma.TripCreateNestedOneWithoutStayOptionsInput
   bookings?: Prisma.BookingCreateNestedManyWithoutStayOptionInput
+  trip: Prisma.TripCreateNestedOneWithoutStayOptionsInput
 }
 
 export type TripStayOptionUncheckedCreateWithoutPartnerStayInput = {
@@ -602,8 +602,8 @@ export type TripStayOptionCreateWithoutBookingsInput = {
   isIncluded?: boolean
   isOptional?: boolean
   extraCost?: number
-  trip: Prisma.TripCreateNestedOneWithoutStayOptionsInput
   partnerStay: Prisma.PartnerStayCreateNestedOneWithoutStayOptionsInput
+  trip: Prisma.TripCreateNestedOneWithoutStayOptionsInput
 }
 
 export type TripStayOptionUncheckedCreateWithoutBookingsInput = {
@@ -636,8 +636,8 @@ export type TripStayOptionUpdateWithoutBookingsInput = {
   isIncluded?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isOptional?: Prisma.BoolFieldUpdateOperationsInput | boolean
   extraCost?: Prisma.IntFieldUpdateOperationsInput | number
-  trip?: Prisma.TripUpdateOneRequiredWithoutStayOptionsNestedInput
   partnerStay?: Prisma.PartnerStayUpdateOneRequiredWithoutStayOptionsNestedInput
+  trip?: Prisma.TripUpdateOneRequiredWithoutStayOptionsNestedInput
 }
 
 export type TripStayOptionUncheckedUpdateWithoutBookingsInput = {
@@ -662,8 +662,8 @@ export type TripStayOptionUpdateWithoutTripInput = {
   isIncluded?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isOptional?: Prisma.BoolFieldUpdateOperationsInput | boolean
   extraCost?: Prisma.IntFieldUpdateOperationsInput | number
-  partnerStay?: Prisma.PartnerStayUpdateOneRequiredWithoutStayOptionsNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutStayOptionNestedInput
+  partnerStay?: Prisma.PartnerStayUpdateOneRequiredWithoutStayOptionsNestedInput
 }
 
 export type TripStayOptionUncheckedUpdateWithoutTripInput = {
@@ -696,8 +696,8 @@ export type TripStayOptionUpdateWithoutPartnerStayInput = {
   isIncluded?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isOptional?: Prisma.BoolFieldUpdateOperationsInput | boolean
   extraCost?: Prisma.IntFieldUpdateOperationsInput | number
-  trip?: Prisma.TripUpdateOneRequiredWithoutStayOptionsNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutStayOptionNestedInput
+  trip?: Prisma.TripUpdateOneRequiredWithoutStayOptionsNestedInput
 }
 
 export type TripStayOptionUncheckedUpdateWithoutPartnerStayInput = {
@@ -755,9 +755,9 @@ export type TripStayOptionSelect<ExtArgs extends runtime.Types.Extensions.Intern
   isIncluded?: boolean
   isOptional?: boolean
   extraCost?: boolean
-  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
-  partnerStay?: boolean | Prisma.PartnerStayDefaultArgs<ExtArgs>
   bookings?: boolean | Prisma.TripStayOption$bookingsArgs<ExtArgs>
+  partnerStay?: boolean | Prisma.PartnerStayDefaultArgs<ExtArgs>
+  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TripStayOptionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tripStayOption"]>
 
@@ -768,8 +768,8 @@ export type TripStayOptionSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   isIncluded?: boolean
   isOptional?: boolean
   extraCost?: boolean
-  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   partnerStay?: boolean | Prisma.PartnerStayDefaultArgs<ExtArgs>
+  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tripStayOption"]>
 
 export type TripStayOptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -779,8 +779,8 @@ export type TripStayOptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   isIncluded?: boolean
   isOptional?: boolean
   extraCost?: boolean
-  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   partnerStay?: boolean | Prisma.PartnerStayDefaultArgs<ExtArgs>
+  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tripStayOption"]>
 
 export type TripStayOptionSelectScalar = {
@@ -794,26 +794,26 @@ export type TripStayOptionSelectScalar = {
 
 export type TripStayOptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tripId" | "partnerStayId" | "isIncluded" | "isOptional" | "extraCost", ExtArgs["result"]["tripStayOption"]>
 export type TripStayOptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
-  partnerStay?: boolean | Prisma.PartnerStayDefaultArgs<ExtArgs>
   bookings?: boolean | Prisma.TripStayOption$bookingsArgs<ExtArgs>
+  partnerStay?: boolean | Prisma.PartnerStayDefaultArgs<ExtArgs>
+  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TripStayOptionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TripStayOptionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   partnerStay?: boolean | Prisma.PartnerStayDefaultArgs<ExtArgs>
+  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
 }
 export type TripStayOptionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   partnerStay?: boolean | Prisma.PartnerStayDefaultArgs<ExtArgs>
+  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
 }
 
 export type $TripStayOptionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TripStayOption"
   objects: {
-    trip: Prisma.$TripPayload<ExtArgs>
-    partnerStay: Prisma.$PartnerStayPayload<ExtArgs>
     bookings: Prisma.$BookingPayload<ExtArgs>[]
+    partnerStay: Prisma.$PartnerStayPayload<ExtArgs>
+    trip: Prisma.$TripPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1216,9 +1216,9 @@ readonly fields: TripStayOptionFieldRefs;
  */
 export interface Prisma__TripStayOptionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  trip<T extends Prisma.TripDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TripDefaultArgs<ExtArgs>>): Prisma.Prisma__TripClient<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  partnerStay<T extends Prisma.PartnerStayDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PartnerStayDefaultArgs<ExtArgs>>): Prisma.Prisma__PartnerStayClient<runtime.Types.Result.GetResult<Prisma.$PartnerStayPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   bookings<T extends Prisma.TripStayOption$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TripStayOption$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  partnerStay<T extends Prisma.PartnerStayDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PartnerStayDefaultArgs<ExtArgs>>): Prisma.Prisma__PartnerStayClient<runtime.Types.Result.GetResult<Prisma.$PartnerStayPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  trip<T extends Prisma.TripDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TripDefaultArgs<ExtArgs>>): Prisma.Prisma__TripClient<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

@@ -25,6 +25,7 @@ export type AggregateCustomer = {
 }
 
 export type CustomerMinAggregateOutputType = {
+  userId: string | null
   id: string | null
   fullName: string | null
   phone: string | null
@@ -34,6 +35,7 @@ export type CustomerMinAggregateOutputType = {
 }
 
 export type CustomerMaxAggregateOutputType = {
+  userId: string | null
   id: string | null
   fullName: string | null
   phone: string | null
@@ -43,6 +45,7 @@ export type CustomerMaxAggregateOutputType = {
 }
 
 export type CustomerCountAggregateOutputType = {
+  userId: number
   id: number
   fullName: number
   phone: number
@@ -54,6 +57,7 @@ export type CustomerCountAggregateOutputType = {
 
 
 export type CustomerMinAggregateInputType = {
+  userId?: true
   id?: true
   fullName?: true
   phone?: true
@@ -63,6 +67,7 @@ export type CustomerMinAggregateInputType = {
 }
 
 export type CustomerMaxAggregateInputType = {
+  userId?: true
   id?: true
   fullName?: true
   phone?: true
@@ -72,6 +77,7 @@ export type CustomerMaxAggregateInputType = {
 }
 
 export type CustomerCountAggregateInputType = {
+  userId?: true
   id?: true
   fullName?: true
   phone?: true
@@ -154,6 +160,7 @@ export type CustomerGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 export type CustomerGroupByOutputType = {
+  userId: string | null
   id: string
   fullName: string
   phone: string
@@ -184,6 +191,7 @@ export type CustomerWhereInput = {
   AND?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
   OR?: Prisma.CustomerWhereInput[]
   NOT?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
+  userId?: Prisma.UuidNullableFilter<"Customer"> | string | null
   id?: Prisma.StringFilter<"Customer"> | string
   fullName?: Prisma.StringFilter<"Customer"> | string
   phone?: Prisma.StringFilter<"Customer"> | string
@@ -195,6 +203,7 @@ export type CustomerWhereInput = {
 }
 
 export type CustomerOrderByWithRelationInput = {
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   phone?: Prisma.SortOrder
@@ -206,6 +215,7 @@ export type CustomerOrderByWithRelationInput = {
 }
 
 export type CustomerWhereUniqueInput = Prisma.AtLeast<{
+  userId?: string
   id?: string
   email?: string
   AND?: Prisma.CustomerWhereInput | Prisma.CustomerWhereInput[]
@@ -217,9 +227,10 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   bookings?: Prisma.BookingListRelationFilter
   inquiries?: Prisma.InquiryListRelationFilter
-}, "id" | "email">
+}, "id" | "userId" | "email">
 
 export type CustomerOrderByWithAggregationInput = {
+  userId?: Prisma.SortOrderInput | Prisma.SortOrder
   id?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   phone?: Prisma.SortOrder
@@ -235,6 +246,7 @@ export type CustomerScalarWhereWithAggregatesInput = {
   AND?: Prisma.CustomerScalarWhereWithAggregatesInput | Prisma.CustomerScalarWhereWithAggregatesInput[]
   OR?: Prisma.CustomerScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CustomerScalarWhereWithAggregatesInput | Prisma.CustomerScalarWhereWithAggregatesInput[]
+  userId?: Prisma.UuidNullableWithAggregatesFilter<"Customer"> | string | null
   id?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   fullName?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   phone?: Prisma.StringWithAggregatesFilter<"Customer"> | string
@@ -244,6 +256,7 @@ export type CustomerScalarWhereWithAggregatesInput = {
 }
 
 export type CustomerCreateInput = {
+  userId?: string | null
   id?: string
   fullName: string
   phone: string
@@ -255,6 +268,7 @@ export type CustomerCreateInput = {
 }
 
 export type CustomerUncheckedCreateInput = {
+  userId?: string | null
   id?: string
   fullName: string
   phone: string
@@ -266,6 +280,7 @@ export type CustomerUncheckedCreateInput = {
 }
 
 export type CustomerUpdateInput = {
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -277,6 +292,7 @@ export type CustomerUpdateInput = {
 }
 
 export type CustomerUncheckedUpdateInput = {
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -288,6 +304,7 @@ export type CustomerUncheckedUpdateInput = {
 }
 
 export type CustomerCreateManyInput = {
+  userId?: string | null
   id?: string
   fullName: string
   phone: string
@@ -297,6 +314,7 @@ export type CustomerCreateManyInput = {
 }
 
 export type CustomerUpdateManyMutationInput = {
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -306,6 +324,7 @@ export type CustomerUpdateManyMutationInput = {
 }
 
 export type CustomerUncheckedUpdateManyInput = {
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -315,6 +334,7 @@ export type CustomerUncheckedUpdateManyInput = {
 }
 
 export type CustomerCountOrderByAggregateInput = {
+  userId?: Prisma.SortOrder
   id?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   phone?: Prisma.SortOrder
@@ -324,6 +344,7 @@ export type CustomerCountOrderByAggregateInput = {
 }
 
 export type CustomerMaxOrderByAggregateInput = {
+  userId?: Prisma.SortOrder
   id?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   phone?: Prisma.SortOrder
@@ -333,6 +354,7 @@ export type CustomerMaxOrderByAggregateInput = {
 }
 
 export type CustomerMinOrderByAggregateInput = {
+  userId?: Prisma.SortOrder
   id?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   phone?: Prisma.SortOrder
@@ -386,6 +408,7 @@ export type CustomerUpdateOneWithoutInquiriesNestedInput = {
 }
 
 export type CustomerCreateWithoutBookingsInput = {
+  userId?: string | null
   id?: string
   fullName: string
   phone: string
@@ -396,6 +419,7 @@ export type CustomerCreateWithoutBookingsInput = {
 }
 
 export type CustomerUncheckedCreateWithoutBookingsInput = {
+  userId?: string | null
   id?: string
   fullName: string
   phone: string
@@ -422,6 +446,7 @@ export type CustomerUpdateToOneWithWhereWithoutBookingsInput = {
 }
 
 export type CustomerUpdateWithoutBookingsInput = {
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -432,6 +457,7 @@ export type CustomerUpdateWithoutBookingsInput = {
 }
 
 export type CustomerUncheckedUpdateWithoutBookingsInput = {
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -442,6 +468,7 @@ export type CustomerUncheckedUpdateWithoutBookingsInput = {
 }
 
 export type CustomerCreateWithoutInquiriesInput = {
+  userId?: string | null
   id?: string
   fullName: string
   phone: string
@@ -452,6 +479,7 @@ export type CustomerCreateWithoutInquiriesInput = {
 }
 
 export type CustomerUncheckedCreateWithoutInquiriesInput = {
+  userId?: string | null
   id?: string
   fullName: string
   phone: string
@@ -478,6 +506,7 @@ export type CustomerUpdateToOneWithWhereWithoutInquiriesInput = {
 }
 
 export type CustomerUpdateWithoutInquiriesInput = {
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -488,6 +517,7 @@ export type CustomerUpdateWithoutInquiriesInput = {
 }
 
 export type CustomerUncheckedUpdateWithoutInquiriesInput = {
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   id?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
@@ -538,6 +568,7 @@ export type CustomerCountOutputTypeCountInquiriesArgs<ExtArgs extends runtime.Ty
 
 
 export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  userId?: boolean
   id?: boolean
   fullName?: boolean
   phone?: boolean
@@ -550,6 +581,7 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 }, ExtArgs["result"]["customer"]>
 
 export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  userId?: boolean
   id?: boolean
   fullName?: boolean
   phone?: boolean
@@ -559,6 +591,7 @@ export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
 }, ExtArgs["result"]["customer"]>
 
 export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+  userId?: boolean
   id?: boolean
   fullName?: boolean
   phone?: boolean
@@ -568,6 +601,7 @@ export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
 }, ExtArgs["result"]["customer"]>
 
 export type CustomerSelectScalar = {
+  userId?: boolean
   id?: boolean
   fullName?: boolean
   phone?: boolean
@@ -576,7 +610,7 @@ export type CustomerSelectScalar = {
   createdAt?: boolean
 }
 
-export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fullName" | "phone" | "email" | "country" | "createdAt", ExtArgs["result"]["customer"]>
+export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"userId" | "id" | "fullName" | "phone" | "email" | "country" | "createdAt", ExtArgs["result"]["customer"]>
 export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   bookings?: boolean | Prisma.Customer$bookingsArgs<ExtArgs>
   inquiries?: boolean | Prisma.Customer$inquiriesArgs<ExtArgs>
@@ -592,6 +626,7 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     inquiries: Prisma.$InquiryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
+    userId: string | null
     id: string
     fullName: string
     phone: string
@@ -681,8 +716,8 @@ export interface CustomerDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    * // Get first 10 Customers
    * const customers = await prisma.customer.findMany({ take: 10 })
    * 
-   * // Only select the `id`
-   * const customerWithIdOnly = await prisma.customer.findMany({ select: { id: true } })
+   * // Only select the `userId`
+   * const customerWithUserIdOnly = await prisma.customer.findMany({ select: { userId: true } })
    * 
    */
   findMany<T extends CustomerFindManyArgs>(args?: Prisma.SelectSubset<T, CustomerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -726,9 +761,9 @@ export interface CustomerDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    *   ]
    * })
    * 
-   * // Create many Customers and only return the `id`
-   * const customerWithIdOnly = await prisma.customer.createManyAndReturn({
-   *   select: { id: true },
+   * // Create many Customers and only return the `userId`
+   * const customerWithUserIdOnly = await prisma.customer.createManyAndReturn({
+   *   select: { userId: true },
    *   data: [
    *     // ... provide data here
    *   ]
@@ -817,9 +852,9 @@ export interface CustomerDelegate<ExtArgs extends runtime.Types.Extensions.Inter
    *   ]
    * })
    * 
-   * // Update zero or more Customers and only return the `id`
-   * const customerWithIdOnly = await prisma.customer.updateManyAndReturn({
-   *   select: { id: true },
+   * // Update zero or more Customers and only return the `userId`
+   * const customerWithUserIdOnly = await prisma.customer.updateManyAndReturn({
+   *   select: { userId: true },
    *   where: {
    *     // ... provide filter here
    *   },
@@ -1023,6 +1058,7 @@ export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends runtime
  * Fields of the Customer model
  */
 export interface CustomerFieldRefs {
+  readonly userId: Prisma.FieldRef<"Customer", 'String'>
   readonly id: Prisma.FieldRef<"Customer", 'String'>
   readonly fullName: Prisma.FieldRef<"Customer", 'String'>
   readonly phone: Prisma.FieldRef<"Customer", 'String'>

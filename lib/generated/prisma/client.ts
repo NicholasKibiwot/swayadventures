@@ -116,3 +116,30 @@ export type Testimonial = Prisma.TestimonialModel
  * 
  */
 export type HeroSlide = Prisma.HeroSlideModel
+/**
+ * Model TourReview
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export type TourReview = Prisma.TourReviewModel
+/**
+ * Model newsletter_subscribers
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export type newsletter_subscribers = Prisma.newsletter_subscribersModel
+/**
+ * Model notifications
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export type notifications = Prisma.notificationsModel
+/**
+ * Model partner_hotels
+ * This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export type partner_hotels = Prisma.partner_hotelsModel
+/**
+ * Model user_profiles
+ * This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+ */
+export type user_profiles = Prisma.user_profilesModel

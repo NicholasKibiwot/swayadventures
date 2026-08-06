@@ -240,8 +240,8 @@ export type TripDateWhereInput = {
   capacity?: Prisma.IntFilter<"TripDate"> | number
   spotsLeft?: Prisma.IntFilter<"TripDate"> | number
   priceOverride?: Prisma.IntNullableFilter<"TripDate"> | number | null
-  trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
   bookings?: Prisma.BookingListRelationFilter
+  trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
 }
 
 export type TripDateOrderByWithRelationInput = {
@@ -252,8 +252,8 @@ export type TripDateOrderByWithRelationInput = {
   capacity?: Prisma.SortOrder
   spotsLeft?: Prisma.SortOrder
   priceOverride?: Prisma.SortOrderInput | Prisma.SortOrder
-  trip?: Prisma.TripOrderByWithRelationInput
   bookings?: Prisma.BookingOrderByRelationAggregateInput
+  trip?: Prisma.TripOrderByWithRelationInput
 }
 
 export type TripDateWhereUniqueInput = Prisma.AtLeast<{
@@ -267,8 +267,8 @@ export type TripDateWhereUniqueInput = Prisma.AtLeast<{
   capacity?: Prisma.IntFilter<"TripDate"> | number
   spotsLeft?: Prisma.IntFilter<"TripDate"> | number
   priceOverride?: Prisma.IntNullableFilter<"TripDate"> | number | null
-  trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
   bookings?: Prisma.BookingListRelationFilter
+  trip?: Prisma.XOR<Prisma.TripScalarRelationFilter, Prisma.TripWhereInput>
 }, "id">
 
 export type TripDateOrderByWithAggregationInput = {
@@ -306,8 +306,8 @@ export type TripDateCreateInput = {
   capacity: number
   spotsLeft: number
   priceOverride?: number | null
-  trip: Prisma.TripCreateNestedOneWithoutDatesInput
   bookings?: Prisma.BookingCreateNestedManyWithoutTripDateInput
+  trip: Prisma.TripCreateNestedOneWithoutDatesInput
 }
 
 export type TripDateUncheckedCreateInput = {
@@ -328,8 +328,8 @@ export type TripDateUpdateInput = {
   capacity?: Prisma.IntFieldUpdateOperationsInput | number
   spotsLeft?: Prisma.IntFieldUpdateOperationsInput | number
   priceOverride?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  trip?: Prisma.TripUpdateOneRequiredWithoutDatesNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutTripDateNestedInput
+  trip?: Prisma.TripUpdateOneRequiredWithoutDatesNestedInput
 }
 
 export type TripDateUncheckedUpdateInput = {
@@ -685,8 +685,8 @@ export type TripDateSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   capacity?: boolean
   spotsLeft?: boolean
   priceOverride?: boolean
-  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   bookings?: boolean | Prisma.TripDate$bookingsArgs<ExtArgs>
+  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TripDateCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tripDate"]>
 
@@ -724,8 +724,8 @@ export type TripDateSelectScalar = {
 
 export type TripDateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tripId" | "startDate" | "endDate" | "capacity" | "spotsLeft" | "priceOverride", ExtArgs["result"]["tripDate"]>
 export type TripDateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   bookings?: boolean | Prisma.TripDate$bookingsArgs<ExtArgs>
+  trip?: boolean | Prisma.TripDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TripDateCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TripDateIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -738,8 +738,8 @@ export type TripDateIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $TripDatePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TripDate"
   objects: {
-    trip: Prisma.$TripPayload<ExtArgs>
     bookings: Prisma.$BookingPayload<ExtArgs>[]
+    trip: Prisma.$TripPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1143,8 +1143,8 @@ readonly fields: TripDateFieldRefs;
  */
 export interface Prisma__TripDateClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  trip<T extends Prisma.TripDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TripDefaultArgs<ExtArgs>>): Prisma.Prisma__TripClient<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   bookings<T extends Prisma.TripDate$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TripDate$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  trip<T extends Prisma.TripDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TripDefaultArgs<ExtArgs>>): Prisma.Prisma__TripClient<runtime.Types.Result.GetResult<Prisma.$TripPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
