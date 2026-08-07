@@ -71,6 +71,44 @@ function generateRef() {
   return `SWY-${Math.floor(Math.random() * 90000) + 10000}`;
 }
 
+/* ─── Validation: names, email, country-aware phone numbers ─────────────── */
+const COUNTRIES = [
+  { code: 'KE', name: 'Kenya', dial: '+254', pattern: /^(?:\+254|0)(7|1)\d{8}$/, placeholder: '0712 345 678', hint: 'e.g. 0712 345 678 or +254 712 345 678' },
+  { code: 'UG', name: 'Uganda', dial: '+256', pattern: /^(?:\+256|0)(7|20)\d{7}$/, placeholder: '0712 345 678', hint: 'e.g. 0712 345 678 or +256 712 345 678' },
+  { code: 'TZ', name: 'Tanzania', dial: '+255', pattern: /^(?:\+255|0)(6|7)\d{8}$/, placeholder: '0712 345 678', hint: 'e.g. 0712 345 678 or +255 712 345 678' },
+  { code: 'RW', name: 'Rwanda', dial: '+250', pattern: /^(?:\+250|0)7\d{8}$/, placeholder: '0720 123 456', hint: 'e.g. 0720 123 456 or +250 720 123 456' },
+  { code: 'NG', name: 'Nigeria', dial: '+234', pattern: /^(?:\+234|0)[789]\d{9}$/, placeholder: '0803 123 4567', hint: 'e.g. 0803 123 4567 or +234 803 123 4567' },
+  { code: 'GH', name: 'Ghana', dial: '+233', pattern: /^(?:\+233|0)[235]\d{8}$/, placeholder: '024 123 4567', hint: 'e.g. 024 123 4567 or +233 24 123 4567' },
+  { code: 'ZA', name: 'South Africa', dial: '+27', pattern: /^(?:\+27|0)[6-8]\d{8}$/, placeholder: '071 234 5678', hint: 'e.g. 071 234 5678 or +27 71 234 5678' },
+  { code: 'ET', name: 'Ethiopia', dial: '+251', pattern: /^(?:\+251|0)9\d{8}$/, placeholder: '091 123 4567', hint: 'e.g. 091 123 4567 or +251 91 123 4567' },
+  { code: 'GB', name: 'United Kingdom', dial: '+44', pattern: /^(?:\+44|0)7\d{9}$/, placeholder: '07123 456 789', hint: 'e.g. 07123 456 789 or +44 7123 456 789' },
+  { code: 'US', name: 'United States', dial: '+1', pattern: /^\+?1?\d{10}$/, placeholder: '(415) 555-2671', hint: 'e.g. (415) 555-2671 or +1 415 555 2671' },
+  { code: 'IN', name: 'India', dial: '+91', pattern: /^(?:\+91|0)?[6-9]\d{9}$/, placeholder: '98765 43210', hint: 'e.g. 98765 43210 or +91 98765 43210' },
+  { code: 'CN', name: 'China', dial: '+86', pattern: /^(?:\+86|0)1[3-9]\d{9}$/, placeholder: '131 2345 6789', hint: 'e.g. 131 2345 6789 or +86 131 2345 6789' },
+  { code: 'DE', name: 'Germany', dial: '+49', pattern: /^(?:\+49|0)1\d{9,10}$/, placeholder: '0151 23456789', hint: 'e.g. 0151 23456789 or +49 151 23456789' },
+  { code: 'FR', name: 'France', dial: '+33', pattern: /^(?:\+33|0)[67]\d{8}$/, placeholder: '06 12 34 56 78', hint: 'e.g. 06 12 34 56 78 or +33 6 12 34 56 78' },
+  { code: 'OTHER', name: 'Other', dial: '', pattern: /^\+?\d{7,15}$/, placeholder: '+123 456 7890', hint: 'Include country code, e.g. +123 456 7890' }
+];
+
+const getCountry = (name: string) => COUNTRIES.find((c) => c.name === name) || COUNTRIES[COUNTRIES.length - 1];
+
+const isValidName = (v: string) => /^[A-Za-zÀ-ÖØ-öø-ÿ][A-Za-zÀ-ÖØ-öø-ÿ'’ -]{1,49}$/.test(v.trim());
+const isValidEmail = (v: string) => /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(v.trim());
+const isValidPhone = (v: string, countryName: string) => {
+  const cleaned = v.replace(/[\s().-]/g, '');
+  return getCountry(countryName).pattern.test(cleaned);
+};
+
+function getPersonalErrors(form: BookingFormData) {
+  const errors: Partial<Record<keyof BookingFormData, string>> = {};
+  if (!isValidName(form.firstName)) errors.firstName = 'Enter a valid first name (letters, spaces, hyphens only).';
+  if (!isValidName(form.lastName)) errors.lastName = 'Enter a valid last name (letters, spaces, hyphens only).';
+  if (!isValidEmail(form.email)) errors.email = 'Enter a valid email address, e.g. james@email.com.';
+  if (!form.nationality) errors.nationality = 'Select your nationality.';
+  else if (!isValidPhone(form.phone, form.nationality)) errors.phone = `Enter a valid ${form.nationality === 'Other' ? 'international' : form.nationality} phone number. ${getCountry(form.nationality).hint}`;
+  return errors;
+}
+
 export default function BookingClientPage() {
   const { user } = useAuth();
   const [tourOptions, setTourOptions] = useState<TourOption[]>(FALLBACK_TOUR_OPTIONS);
@@ -88,7 +126,7 @@ export default function BookingClientPage() {
     tourLocation: '',
     checkIn: '',
     checkOut: '',
-    groupSize: 2,
+    groupSize: 1,
     specialRequests: '',
     firstName: '',
     lastName: '',
@@ -185,7 +223,7 @@ export default function BookingClientPage() {
   const canProceed = (): boolean => {
     if (currentStep === 1) return !!form.tourId;
     if (currentStep === 2) return !!form.checkIn && !!form.checkOut && form.groupSize >= 1;
-    if (currentStep === 3) return !!form.firstName && !!form.lastName && !!form.email && !!form.phone;
+    if (currentStep === 3) return Object.keys(getPersonalErrors(form)).length === 0;
     if (currentStep === 4) return !!form.paymentMethod;
     return false;
   };
@@ -573,6 +611,7 @@ function Step2TravelDetails({
   );
 }
 
+// ─── Step 3: Personal Info (validated) ──────────────────────────────────────
 function Step3PersonalInfo({
   form,
   updateForm
@@ -580,31 +619,104 @@ function Step3PersonalInfo({
   form: BookingFormData;
   updateForm: (k: keyof BookingFormData, v: string | number | null) => void;
 }) {
-  const fields: Array<{ key: keyof BookingFormData; label: string; type: string; placeholder: string; colSpan?: number }> = [
-    { key: 'firstName', label: 'First Name', type: 'text', placeholder: 'James' },
-    { key: 'lastName', label: 'Last Name', type: 'text', placeholder: 'Mwangi' },
-    { key: 'email', label: 'Email Address', type: 'email', placeholder: 'james@email.com', colSpan: 2 },
-    { key: 'phone', label: 'Phone Number', type: 'tel', placeholder: '+254 700 000 000' },
-    { key: 'nationality', label: 'Nationality', type: 'text', placeholder: 'Kenyan' }
-  ];
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const errors = getPersonalErrors(form);
+  const country = getCountry(form.nationality);
+  const touch = (k: string) => setTouched((t) => ({ ...t, [k]: true }));
+  const showError = (k: keyof BookingFormData) => !!touched[k] && !!errors[k];
+
+  const inputClass = (k: keyof BookingFormData) =>
+    `w-full px-4 py-3 rounded-xl border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 text-sm transition-colors ${
+      showError(k) ? 'border-red-300 focus:ring-red-300/40' : 'border-border focus:ring-accent/40'
+    }`;
+
+  const ErrorMsg = ({ k }: { k: keyof BookingFormData }) =>
+    showError(k) ? (
+      <p className="mt-1.5 text-xs text-red-500 flex items-center gap-1">
+        <Icon name="ExclamationCircleIcon" size={12} className="shrink-0" />
+        {errors[k]}
+      </p>
+    ) : null;
 
   return (
     <div>
       <h2 className="font-display text-2xl font-semibold text-foreground mb-2">Personal Information</h2>
-      <p className="text-muted-foreground text-sm mb-7">We need a few details to confirm your booking and send your itinerary.</p>
+      <p className="text-muted-foreground text-sm mb-7">
+        We need a few details to confirm your booking and send your itinerary.
+      </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {fields.map((field) => (
-          <div key={String(field.key)} className={field.colSpan === 2 ? 'md:col-span-2' : ''}>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{field.label}</label>
-            <input
-              type={field.type}
-              value={String(form[field.key] ?? '')}
-              onChange={(e) => updateForm(field.key, e.target.value)}
-              placeholder={field.placeholder}
-              className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 text-sm" />
-          </div>
-        ))}
+        {/* First Name */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">First Name</label>
+          <input
+            type="text"
+            value={form.firstName}
+            onChange={(e) => updateForm('firstName', e.target.value)}
+            onBlur={() => touch('firstName')}
+            placeholder="James"
+            className={inputClass('firstName')} />
+          <ErrorMsg k="firstName" />
+        </div>
+
+        {/* Last Name */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Last Name</label>
+          <input
+            type="text"
+            value={form.lastName}
+            onChange={(e) => updateForm('lastName', e.target.value)}
+            onBlur={() => touch('lastName')}
+            placeholder="Mwangi"
+            className={inputClass('lastName')} />
+          <ErrorMsg k="lastName" />
+        </div>
+
+        {/* Email */}
+        <div className="md:col-span-2">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Email Address</label>
+          <input
+            type="email"
+            value={form.email}
+            onChange={(e) => updateForm('email', e.target.value)}
+            onBlur={() => touch('email')}
+            placeholder="james@email.com"
+            className={inputClass('email')} />
+          <ErrorMsg k="email" />
+        </div>
+
+        {/* Nationality Dropdown */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Nationality</label>
+          <select
+            value={form.nationality}
+            onChange={(e) => { updateForm('nationality', e.target.value); touch('nationality'); }}
+            onBlur={() => touch('nationality')}
+            className={inputClass('nationality')}>
+            <option value="" disabled>Select your country</option>
+            {COUNTRIES.map((c) => (
+              <option key={c.code} value={c.name}>{c.name} ({c.dial})</option>
+            ))}
+          </select>
+          <ErrorMsg k="nationality" />
+        </div>
+
+        {/* Phone (validated per selected country) */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Phone Number</label>
+          <input
+            type="tel"
+            value={form.phone}
+            onChange={(e) => updateForm('phone', e.target.value)}
+            onBlur={() => touch('phone')}
+            placeholder={country.placeholder}
+            className={inputClass('phone')} />
+          {showError('phone') ? (
+            <ErrorMsg k="phone" />
+          ) : (
+            <p className="mt-1.5 text-xs text-muted-foreground">Format: {country.hint}</p>
+          )}
+        </div>
       </div>
 
       <div className="mt-6 p-4 rounded-xl bg-primary/5 border border-primary/20 flex gap-3">
