@@ -4,8 +4,8 @@ import Footer from '@/components/Footer';
 import ToursClientPage from '@/app/tours/components/ToursClientPage';
 
 export const metadata = {
-  title: 'Kenya Tours — SwayAdventures',
-  description: 'Browse all Kenya tours: Maasai Mara safaris, Diani beach getaways, Mount Kenya treks, and luxury retreats. Book your Kenya adventure today.',
+  title: 'Tours in Kenya & Beyond — SwayAdventures',
+  description: 'Browse all SwayAdventures tours: Kenyan safaris, beach getaways and retreats, plus international escapes to Bali, Mauritius, Egypt, Dubai, the Maldives and Greece.',
 };
 
 export default function ToursPage() {

@@ -23,4 +23,6 @@ export const imageHosts = [
         protocol: 'https',
         hostname: 'gkxwjibqbtdylworecbs.supabase.co',
     },
+     { protocol: 'https', 
+        hostname: 'image.qwenlm.ai' },
 ];

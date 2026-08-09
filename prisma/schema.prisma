@@ -145,7 +145,7 @@ model Booking {
   reference      String          @unique @default(cuid())
   customerId     String
   tripId         String
-  tripDateId     String
+  tripDateId     String?
   stayOptionId   String?
   bookingType    String
   guests         Int             @default(1)
@@ -159,7 +159,7 @@ model Booking {
   payment_status String          @default("pending")
   customer       Customer        @relation(fields: [customerId], references: [id])
   stayOption     TripStayOption? @relation(fields: [stayOptionId], references: [id])
-  tripDate       TripDate        @relation(fields: [tripDateId], references: [id])
+  tripDate       TripDate?        @relation(fields: [tripDateId], references: [id])
   trip           Trip            @relation(fields: [tripId], references: [id])
   payment        Payment?
   TourReview     TourReview[]
