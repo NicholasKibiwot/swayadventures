@@ -272,14 +272,22 @@ function TourCard({
   tall?: boolean;
   wide?: boolean;
 }) {
+  const categoryText =
+    (categoryLabel[tour.category] || tour.category).charAt(0).toUpperCase() +
+    (categoryLabel[tour.category] || tour.category).slice(1);
+
   return (
     <div
-      className={`group relative overflow-hidden rounded-2xl bg-card shadow-card hover:shadow-card-hover hover-lift ${className}`}>
+      className={`group relative overflow-hidden rounded-2xl bg-card shadow-card hover:shadow-card-hover hover-lift flex flex-col ${className}`}>
 
-      {/* Image container */}
+      {/* Image container — flexes on tall cards instead of hiding the body */}
       <div
         className={`relative overflow-hidden ${
-          tall ? 'h-[340px] md:h-full md:min-h-[520px]' : wide ? 'h-64 md:h-72' : 'h-52 md:h-60'
+          tall
+            ? 'h-[340px] md:h-auto md:flex-1 md:min-h-[380px]'
+            : wide
+            ? 'h-64 md:h-72'
+            : 'h-52 md:h-60'
         }`}>
 
         <AppImage
@@ -295,7 +303,7 @@ function TourCard({
         {/* Category badge */}
         <div className="absolute top-4 left-4">
           <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${categoryBadgeClass[tour.category] || 'badge-safari'}`}>
-            {categoryLabel[tour.category] || tour.category}
+            {categoryText}
           </span>
         </div>
 
@@ -317,8 +325,8 @@ function TourCard({
         </div>
       </div>
 
-      {/* Card body */}
-      <div className={`p-5 ${wide ? 'md:flex md:items-center md:justify-between md:gap-8' : ''}`}>
+      {/* Card body — shrink-0 keeps it visible */}
+      <div className={`p-5 shrink-0 ${wide ? 'md:flex md:items-center md:justify-between md:gap-8' : ''}`}>
         <div className={wide ? 'flex-1' : ''}>
           <h3 className="text-card-title font-display font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
             {tour.title}
@@ -343,7 +351,6 @@ function TourCard({
           <Link
             href="/booking"
             className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-xs font-semibold rounded-full hover:bg-secondary transition-colors">
-
             Book Now
             <Icon name="ArrowRightIcon" size={13} />
           </Link>

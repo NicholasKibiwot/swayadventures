@@ -24,6 +24,7 @@ model Destination {
 }
 
 model Trip {
+  priceNonResident Int?
   id            String           @id @default(cuid())
   destinationId String
   title         String
