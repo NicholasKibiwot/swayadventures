@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import AppImage from '@/components/ui/AppImage';
 import Icon from '@/components/ui/AppIcon';
-import { createClient } from '@/lib/supabase/client';
 
 export default function HeroSection() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -12,36 +11,11 @@ export default function HeroSection() {
   const ctaRef = useRef<HTMLDivElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
   const floatBadgeRef = useRef<HTMLDivElement>(null);
-  const [travelers, setTravelers] = useState(1000);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  /* ---------- LIVE DATA: happy travelers = 1,000 + real booked guests ---------- */
+  /* Entrance animations */
   useEffect(() => {
-    const supabase = createClient();
-
-    const load = async () => {
-      try {
-        const { data } = await supabase.from('Booking').select('guests');
-        const guests = (data || []).reduce((sum: number, b: any) => sum + (Number(b.guests) || 1), 0);
-        setTravelers(1000 + guests);
-      } catch {
-        /* keep 1,000 */
-      }
-    };
-
-    load();
-
-    const channel = supabase
-      .channel('hero-sync')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'Booking' }, () => load())
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  useEffect(() => {
-    const els = [badgeRef.current, floatBadgeRef.current, headlineRef.current, subRef.current, ctaRef.current];
+    const els = [floatBadgeRef.current, badgeRef.current, headlineRef.current, subRef.current, ctaRef.current];
     els.forEach((el, i) => {
       if (!el) return;
       el.style.opacity = '0';
@@ -55,9 +29,35 @@ export default function HeroSection() {
     });
   }, []);
 
+  /* Video: respect reduced-motion + pause offscreen to save battery */
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const apply = () => {
+      if (reduce.matches) video.pause();
+      else video.play().catch(() => {});
+    };
+    apply();
+    reduce.addEventListener?.('change', apply);
+
+    const io = new IntersectionObserver(([entry]) => {
+      if (reduce.matches) return;
+      if (entry.isIntersecting) video.play().catch(() => {});
+      else video.pause();
+    }, { threshold: 0.1 });
+    io.observe(video);
+
+    return () => {
+      reduce.removeEventListener?.('change', apply);
+      io.disconnect();
+    };
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background image */}
+      {/* Background: static image (instant paint + fallback) with video on top */}
       <div className="absolute inset-0 z-0">
         <AppImage
           src="/assets/images/hero-savanna-sunrise.png"
@@ -66,6 +66,25 @@ export default function HeroSection() {
           priority
           sizes="100vw"
           className="object-cover object-center" />
+
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/assets/images/hero-savanna-sunrise.png"
+          aria-hidden="true">
+          {/* Phones: lighter file */}
+          <source src="/assets/videos/hero-savanna-mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
+          {/* Tablets & desktops: HD file */}
+          <source src="/assets/videos/hero-savanna.mp4" type="video/mp4" />
+          {/* Prefer hotlinking? Paste a stock .mp4 URL here instead:
+          <source src="https://your-cdn.com/savanna-hd.mp4" type="video/mp4" /> */}
+        </video>
+
         {/* Desktop scrim: left-heavy */}
         <div className="hero-scrim absolute inset-0 hidden md:block" />
         {/* Mobile scrim: bottom-heavy */}
@@ -81,7 +100,7 @@ export default function HeroSection() {
         </div>
         <div>
           <p className="text-white text-xs font-semibold leading-none">5-Star Rated</p>
-          <p className="text-white/70 text-xs mt-0.5">{travelers.toLocaleString()}+ happy travelers</p>
+          <p className="text-white/70 text-xs mt-0.5">1,000+ happy travelers</p>
         </div>
       </div>
 
@@ -126,12 +145,12 @@ export default function HeroSection() {
               { icon: 'ShieldCheckIcon', text: 'Safe & Certified' },
               { icon: 'MapPinIcon', text: 'Local Expert Guides' },
               { icon: 'CreditCardIcon', text: 'M-Pesa & Card' }
-            ].map((item) =>
+            ].map((item) => (
               <div key={item.text} className="flex items-center gap-2 text-white/70">
                 <Icon name={item.icon as 'ShieldCheckIcon'} size={15} className="text-accent" />
                 <span className="text-sm">{item.text}</span>
               </div>
-            )}
+            ))}
           </div>
         </div>
       </div>
