@@ -261,4 +261,50 @@
   .step-connector.completed {
     background: var(--accent);
   }
+  /* ─────────────────────────────────────────────────────────────
+   THEME REFRESH — very pale green surfaces + brass/bronze accents
+   ───────────────────────────────────────────────────────────── */
+
+/* Surfaces: white / cream → very pale green */
+.bg-background { background-color: #F1F9F3 !important; }
+.bg-muted { background-color: #E5F2E8 !important; }
+.bg-white { background-color: #F6FBF7 !important; }
+.bg-\[\#f8f7f4\] { background-color: #F1F9F3 !important; }
+
+/* Accent: old orange → Bronze #CD7F32 */
+.bg-accent { background-color: #CD7F32 !important; }
+.text-accent { color: #CD7F32 !important; }
+.border-accent { border-color: #CD7F32 !important; }
+.hover\:bg-accent:hover { background-color: #CD7F32 !important; }
+.hover\:text-accent:hover { color: #CD7F32 !important; }
+.hover\:border-accent:hover { border-color: #CD7F32 !important; }
+.bg-accent\/5  { background-color: rgb(205 127 50 / 0.05) !important; }
+.bg-accent\/10 { background-color: rgb(205 127 50 / 0.10) !important; }
+.bg-accent\/20 { background-color: rgb(205 127 50 / 0.20) !important; }
+.bg-accent\/30 { background-color: rgb(205 127 50 / 0.30) !important; }
+.border-accent\/30 { border-color: rgb(205 127 50 / 0.30) !important; }
+.border-accent\/40 { border-color: rgb(205 127 50 / 0.40) !important; }
+.border-accent\/50 { border-color: rgb(205 127 50 / 0.50) !important; }
+.hover\:border-accent\/50:hover { border-color: rgb(205 127 50 / 0.50) !important; }
+.focus\:ring-accent\/40:focus { --tw-ring-color: rgb(205 127 50 / 0.40) !important; }
+.focus\:ring-accent\/50:focus { --tw-ring-color: rgb(205 127 50 / 0.50) !important; }
+
+/* Brown-ish ambers → Brass #E1C16E / Bronze #CD7F32 */
+.text-amber-300 { color: #E7D19A !important; }
+.text-amber-400 { color: #E1C16E !important; }
+.text-amber-500 { color: #D5A94C !important; }
+.text-amber-600 { color: #CD7F32 !important; }
+.text-amber-700 { color: #A9682A !important; }
+.bg-amber-50  { background-color: #FBF7EC !important; }
+.bg-amber-100 { background-color: #F6ECD2 !important; }
+.border-amber-100 { border-color: #F0E3C4 !important; }
+.border-amber-200 { border-color: #E7D19A !important; }
+.hover\:bg-amber-600:hover { background-color: #B4692A !important; }
+
+/* Badges, steps, payment selection */
+.badge-safari { background-color: #F6ECD2 !important; color: #8A5522 !important; }
+.step-indicator.completed,
+.step-indicator.active { background-color: #CD7F32 !important; border-color: #CD7F32 !important; color: #ffffff !important; }
+.step-connector.completed { background-color: #CD7F32 !important; }
+.payment-option.selected { border-color: #CD7F32 !important; background-color: rgb(205 127 50 / 0.06) !important; }
 }
